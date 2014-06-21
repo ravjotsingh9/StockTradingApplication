@@ -7,13 +7,17 @@ using Server.Yahoo_Finance;
 //
 namespace Server
 {
-    class Stock
+    public class Stock
     {
         public string stockname;
         public float stockprice;
 
-        private ObservableCollection<stockQuote> query { get; set; }
+        private List<stockQuote> querys { get; set; }
 
+        public Stock()
+        {
+
+        }
 
         ///You can use this function to test the stock value
         ///stockIdentifier : stock's name
@@ -21,15 +25,23 @@ namespace Server
         ///You can see the right stock name from here:
         ///https://finance.yahoo.com/q?s=AAPL
         // string val = getPriceFromYahoo("AAPL");
-        private String getPriceFromYahoo(String stockIdentifier)
+        public String getPriceFromYahoo(String stockIdentifier)
         {
             string price = "";
-            query = new ObservableCollection<stockQuote>();
-            query.Add(new stockQuote(stockIdentifier));
-            stockQuote rr = getStockData.getData(query);
-            price = rr.LastTradePrice.ToString();
+            List<stockQuote> queryPrice = new List<stockQuote>();
+            queryPrice.Add(new stockQuote(stockIdentifier));
+            getStockData.getData(queryPrice);
+            stockQuote value =  queryPrice.ElementAt(0);
+            price = value.LastTradePrice.ToString();
             return price;
 
         }
+
+        // update the price for all the stocks
+        private void updateAllPrice(List<stockQuote> updateList)
+        {
+
+        }
+
     }
 }

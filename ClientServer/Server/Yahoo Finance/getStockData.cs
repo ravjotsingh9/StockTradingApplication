@@ -11,7 +11,7 @@ namespace Server.Yahoo_Finance
     {
         private const string originURL = "http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20({0})&env=store%3A%2F%2Fdatatables.org%2Falltableswithkeys";
 
-        public static void getData(ObservableCollection<stockQuote> quotes)
+        public static void getData(List<stockQuote> quotes)
         {
             string query = String.Join("%2C", quotes.Select(s => "%22" + s.StockQuery + "%22").ToArray());
             string url = string.Format(originURL, query);
@@ -20,7 +20,7 @@ namespace Server.Yahoo_Finance
            
         }
 
-        private static void xmlProcess(ObservableCollection<stockQuote> quotes, XDocument resultXmlDoc)
+        private static void xmlProcess(List<stockQuote> quotes, XDocument resultXmlDoc)
         {
             XElement results = resultXmlDoc.Root.Element("results");
 
