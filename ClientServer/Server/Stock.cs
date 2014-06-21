@@ -130,5 +130,27 @@ namespace Server
             return success;
         }
 
+        //check if stock already in the tracing list
+        //Server can call this function to check
+        public bool checkInStockList(string name)
+        {
+            return stocksDictionary.ContainsKey(name);
+        }
+
+        //check if the user enter the correct stock name
+        //UI can call this function to display error to the user
+        public bool validStockName(string name)
+        {
+
+            if (getPriceFromYahoo(name) == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
+
     }
 }
