@@ -36,5 +36,17 @@ namespace StockUnitTest
                 Console.WriteLine("is null");
             
         }
+
+        // Test for non-exist data
+        [TestMethod]
+        public void validStockNameTest()
+        {
+            string stockName = "nono";
+            Stock test = new Stock();
+            
+            if (!test.validStockName(stockName))
+                Console.WriteLine("stock does not exist");
+
+        }
     }
 }
