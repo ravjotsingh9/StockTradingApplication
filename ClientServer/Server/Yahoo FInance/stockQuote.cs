@@ -11,7 +11,7 @@ namespace Server.Yahoo_Finance
         private string stockQuery;
 
 
-        private decimal lastTradePrice;
+        private decimal? lastTradePrice;
         private string name;
 
 

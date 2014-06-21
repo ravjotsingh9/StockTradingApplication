@@ -9,6 +9,8 @@ using System.Windows.Forms;
 using System.Net.Sockets;
 using System.Net;
 using System.Threading;
+using System.Collections.ObjectModel;
+using Server.Yahoo_Finance;
 
 namespace Server
 {
@@ -174,6 +176,17 @@ namespace Server
             Stocklist.Add(tmp);
             return "Added-New";
             
+        }
+
+        private ObservableCollection<stockQuote> query { get; set; }
+        
+        private String getPriceFromYahoo(String stockIdentifier){
+            string price="";
+            query = new ObservableCollection<stockQuote>();
+            query.Add(new stockQuote("AAPL"));
+            stockQuote rr = getStockData.getData(query);
+            price = rr.LastTradePrice.ToString();
+            return price;
         }
 
         
