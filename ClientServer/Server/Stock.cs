@@ -13,7 +13,14 @@ namespace Server
         public float stockprice;
         
         // Stock list and price in memory
-        private Dictionary<string, string> StocksDictionary = new Dictionary<string, string>();
+        private Dictionary<string, string> m_stocksDictionary = new Dictionary<string, string>();
+        
+        public Dictionary<string, string> stocksDictionary
+        {
+            get{
+                return m_stocksDictionary;
+               }
+        }
 
         // file's name for stock's information stores in the Disk
         private string fileStock;
@@ -60,7 +67,7 @@ namespace Server
        
         public void addToTheStockList(string stockName, string price)
         {
-            this.StocksDictionary.Add(stockname,price);
+            this.m_stocksDictionary.Add(stockname,price);
         }
 
     }
