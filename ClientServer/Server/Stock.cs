@@ -26,7 +26,7 @@ namespace Server
         private string fileStock;
 
         // file's name for users' information stores in the Disk
-        private string users;
+        private string fileusers;
 
         // querys to update all the stock's price
         private List<stockQuote> updatequerys { get; set; }
@@ -56,10 +56,21 @@ namespace Server
         }
 
         // update the price for all the stocks
-        public bool updateAllPrice(List<stockQuote> updateList)
+        // update information should first write into the disk
+        // stocksDictionary should use getStockDataFromFile to update info
+        public bool updateAllPrice(Dictionary<string, string> stocksDic)
         {
             bool success = false;
+            List<stockQuote> updateQueries = new List<stockQuote>();
+            foreach (string key in stocksDic.Keys)
+            {
+                updateQueries.Add(new stockQuote(key));
+            }
+            getStockData.getData(updateQueries);
 
+            // write into the file
+            writeStockDataInFile(fileStock, updateQueries);
+            
             return success;
 
         }
@@ -68,6 +79,40 @@ namespace Server
         public void addToTheStockList(string stockName, string price)
         {
             this.m_stocksDictionary.Add(stockname,price);
+        }
+
+        // wirte stock's information into the disk
+        public bool writeStockDataInFile(String FileName, List<stockQuote> data){
+            bool success = false;
+            return success;
+        }
+
+        // get stock's information from the disk
+        public bool getStockDataFromFile(String FileName)
+        {
+            bool success = false;
+            return success;
+        }
+
+        // wirte stock's information into the disk
+        public bool writeStockDataInFile(String FileName, List<stockQuote> data)
+        {
+            bool success = false;
+            return success;
+        }
+
+        // get users' information from the disk
+        public bool getUserDataFromFile(String FileName)
+        {
+            bool success = false;
+            return success;
+        }
+
+        // wirte users information into the disk
+        public bool writeStockDataInFile(String FileName, List<Users> data)
+        {
+            bool success = false;
+            return success;
         }
 
     }
