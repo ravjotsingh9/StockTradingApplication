@@ -41,9 +41,6 @@ namespace Server
 
         // querys to update all the stock's price
         private List<stockQuote> updatequerys { get; set; }
-
-        //stocks' share number
-        private int shares;
         
         // constructor 
         public Stock()
