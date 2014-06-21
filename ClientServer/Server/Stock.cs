@@ -13,9 +13,10 @@ namespace Server
         public float stockprice;
         
         // Stock list and price in memory
-        private Dictionary<string, string> m_stocksDictionary = new Dictionary<string, string>();
-        
-        public Dictionary<string, string> stocksDictionary
+        //Key:stock' name, value: price, shares
+        private Dictionary<string, Tuple<string, string>> m_stocksDictionary = new Dictionary<string, Tuple<string, string>>();
+
+        public Dictionary<string, Tuple<string, string>> stocksDictionary
         {
             get{
                 return m_stocksDictionary;
@@ -30,6 +31,9 @@ namespace Server
 
         // querys to update all the stock's price
         private List<stockQuote> updatequerys { get; set; }
+
+        //stocks' share number
+        private int shares;
         
         // constructor 
         public Stock()
@@ -76,9 +80,9 @@ namespace Server
         }
 
        
-        public void addToTheStockList(string stockName, string price)
+        public void addToTheStockList(string stockName, string price, string shares)
         {
-            this.m_stocksDictionary.Add(stockname,price);
+            this.m_stocksDictionary.Add(stockname,new Tuple<string,string>(price,shares));
         }
 
         // wirte stock's information into the disk
