@@ -115,6 +115,12 @@ namespace Server
                     {
                         byte[] msg;
                         string val;
+                        ///You can tempory use the following to test the stock value
+                        ///In the Client send, please input the correct stock name
+                        ///For example, Apple should input as AAPL
+                        ///You can see the right stock name from here:
+                        ///https://finance.yahoo.com/q?s=AAPL
+                        //val = getPriceFromYahoo(data);
                         if ((val = getstockvalue(data)) != "null")
                         {
                             msg = Encoding.ASCII.GetBytes(val);
@@ -183,7 +189,7 @@ namespace Server
         private String getPriceFromYahoo(String stockIdentifier){
             string price="";
             query = new ObservableCollection<stockQuote>();
-            query.Add(new stockQuote("AAPL"));
+            query.Add(new stockQuote(stockIdentifier));
             stockQuote rr = getStockData.getData(query);
             price = rr.LastTradePrice.ToString();
             return price;
