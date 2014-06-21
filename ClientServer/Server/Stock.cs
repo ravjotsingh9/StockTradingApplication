@@ -57,15 +57,19 @@ namespace Server
         ///You can see the right stock name from here:
         ///https://finance.yahoo.com/q?s=AAPL
         // string val = getPriceFromYahoo("AAPL");
-        public String getPriceFromYahoo(String stockIdentifier)
+        public string getPriceFromYahoo(string stockIdentifier)
         {
             string price = "";
             List<stockQuote> queryPrice = new List<stockQuote>();
             queryPrice.Add(new stockQuote(stockIdentifier));
-            getStockData.getData(queryPrice);
-            stockQuote value =  queryPrice.ElementAt(0);
-            price = value.LastTradePrice.ToString();
-            return price;
+            if(getStockData.getData(queryPrice))
+            {
+                stockQuote value =  queryPrice.ElementAt(0);
+                price = value.LastTradePrice.ToString();
+                return price;
+            }
+
+            return null;
 
         }
 
