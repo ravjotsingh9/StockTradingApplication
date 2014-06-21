@@ -15,7 +15,10 @@ namespace Client
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Form1 Client = new Form1();
+            Client.Text = "Get Stock Value";
+            Client.SetDesktopLocation(500, 1);
+            Application.Run(Client);
         }
     }
 }

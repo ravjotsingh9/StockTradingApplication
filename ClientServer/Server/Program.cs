@@ -15,7 +15,11 @@ namespace Server
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Form1 Server = new Form1();
+            Server.Text = "Server";
+            Server.SetDesktopLocation(1, 1);
+            Server.TopMost = true;
+            Application.Run(Server);
         }
     }
 }

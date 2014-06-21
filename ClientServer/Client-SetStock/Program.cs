@@ -16,7 +16,10 @@ namespace Client_SetStock
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            Application.Run(new Form1());
+            Form1 ClientSet = new Form1();
+            ClientSet.Text = "Set Stocks";
+            ClientSet.SetDesktopLocation(100,1);
+            Application.Run(ClientSet);
         }
     }
 }
