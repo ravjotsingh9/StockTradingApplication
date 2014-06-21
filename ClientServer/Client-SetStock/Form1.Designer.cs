@@ -83,12 +83,12 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(113, 124);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(13, 13);
+            this.label3.Size = new System.Drawing.Size(0, 13);
             this.label3.TabIndex = 5;
-            this.label3.Text = "_";
             // 
             // Form1
             // 
+            this.AcceptButton = this.btn;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 261);

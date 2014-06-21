@@ -41,7 +41,7 @@
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 23);
             this.button1.TabIndex = 0;
-            this.button1.Text = "Get Quote";
+            this.button1.Text = "Get Rate";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
@@ -75,12 +75,13 @@
             this.lblrate.AutoSize = true;
             this.lblrate.Location = new System.Drawing.Point(137, 69);
             this.lblrate.Name = "lblrate";
-            this.lblrate.Size = new System.Drawing.Size(97, 13);
+            this.lblrate.Size = new System.Drawing.Size(13, 13);
             this.lblrate.TabIndex = 4;
-            this.lblrate.Text = "_______________";
+            this.lblrate.Text = "_";
             // 
             // Form1
             // 
+            this.AcceptButton = this.button1;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(284, 262);

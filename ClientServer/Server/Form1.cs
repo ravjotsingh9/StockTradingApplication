@@ -14,11 +14,17 @@ namespace Server
 {
     public partial class Form1 : Form
     {
+        
+        /*    
+        byte[] bytes;
+            IPHostEntry ipHostInfo;
+            IPAddress ipAddress;
+            IPEndPoint localEndPoint;
+          */  
         string data;
-        Socket soc;
-        Socket listener;
+        
         List<Stock> Stocklist;
-        //volatile bool stop;
+        volatile bool stop;
         Thread thread;
         public Form1()
         {
@@ -28,8 +34,9 @@ namespace Server
             obj.stockname = "abc";
             obj.stockprice = 10;
             Stocklist.Add(obj);
-            
-            //stop = true;
+            //button2.Enabled = false;
+            stop = false;
+
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -37,27 +44,36 @@ namespace Server
             thread = new Thread(new ThreadStart(serverthread));
             label1.Text = "Running";
             button1.Enabled = false;
-            
+            //button2.Enabled = true;
             thread.Start();
-            
         }
         public void serverthread()
         {
-            byte[] bytes = new Byte[1024];
+
+            byte [] bytes = new byte[1024];
             IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
             IPAddress ipAddress = ipHostInfo.AddressList[0];
             IPEndPoint localEndPoint = new IPEndPoint(ipAddress, 11001);
-            listener = new Socket(AddressFamily.InterNetwork,
-            SocketType.Stream, ProtocolType.Tcp);
+            Socket listener = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            listener.Bind(localEndPoint);
+            listener.Listen(10);
             try
             {
-                listener.Bind(localEndPoint);
-                listener.Listen(10);
-
                 // Start listening for connections.
-                while (true)
+                while (true && !stop)
                 {
-                    soc = listener.Accept();
+                    Socket soc = listener.Accept();
+                    if (stop)
+                    {
+                        if (DialogResult.Yes == MessageBox.Show("Do you really want to shut down server? ", "Allow", MessageBoxButtons.YesNo))
+                        {
+                         
+                            soc.Shutdown(SocketShutdown.Both);
+                            soc.Close();
+                            Application.Exit();
+                            break;
+                        }
+                    }
                     data = null;
                     while (true)
                     {
@@ -113,13 +129,16 @@ namespace Server
                     soc.Shutdown(SocketShutdown.Both);
                     soc.Close();
                 }
-
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
             }
+            
+            thread.Abort();
+            
         }
+
         public string getstockvalue(string data)
         {
             int i = 0;
@@ -153,10 +172,40 @@ namespace Server
             tmp.stockname = sname;
             tmp.stockprice = (float)Convert.ToDouble(sval);
             Stocklist.Add(tmp);
-            return "Add-New";
+            return "Added-New";
             
         }
+
         
+        private void button2_Click(object sender, EventArgs e)
+        {
+            // Establish the remote endpoint for the socket.
+                IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
+                IPAddress ipAddress = ipHostInfo.AddressList[0];
+                IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11001);
+
+                // Create a TCP/IP  socket.
+                Socket snder = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
+                // Connect the socket to the remote endpoint. Catch any errors.
+                try
+                {
+                    stop = true;
+                    snder.Connect(remoteEP);
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message); 
+                }
+                snder.Shutdown(SocketShutdown.Both);    
+            snder.Close();
+            
+                button2.Enabled = false;
+                button1.Enabled = true;
+                
+        }
+
+                
     }
 
 }

@@ -20,6 +20,11 @@ namespace Client
 
         private void button1_Click(object sender, EventArgs e)
         {
+            if(txtstockname.Text  == "")
+            {
+                MessageBox.Show("Stock Name cannot be empty.","Please provide the stock name");
+                return;
+            }
             // Data buffer for incoming data.
             byte[] bytes = new byte[1024];
 

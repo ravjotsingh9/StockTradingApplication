@@ -21,6 +21,11 @@ namespace Client_SetStock
 
         private void btn_Click(object sender, EventArgs e)
         {
+            if(txtname.Text == "" || txtvalue.Text == "")
+            {
+                MessageBox.Show("Name and Value cannot be empty.", "Please prove name and value");
+                return;
+            }
             // Data buffer for incoming data.
             byte[] bytes = new byte[1024];
 
