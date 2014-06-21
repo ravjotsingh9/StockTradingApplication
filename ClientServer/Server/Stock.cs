@@ -94,12 +94,6 @@ namespace Server
             return success;
         }
 
-        // wirte stock's information into the disk
-        public bool writeStockDataInFile(String FileName, List<stockQuote> data)
-        {
-            bool success = false;
-            return success;
-        }
 
         // get users' information from the disk
         public bool getUserDataFromFile(String FileName)
@@ -109,7 +103,7 @@ namespace Server
         }
 
         // wirte users information into the disk
-        public bool writeStockDataInFile(String FileName, List<Users> data)
+        private bool writeUserDataInFile(String FileName, List<Users> data)
         {
             bool success = false;
             return success;
