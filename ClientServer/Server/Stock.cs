@@ -14,9 +14,9 @@ namespace Server
         
         // Stock list and price in memory
         //Key:stock' name, value: price, shares
-        private Dictionary<string, Tuple<string, string>> m_stocksDictionary = new Dictionary<string, Tuple<string, string>>();
+        private Dictionary<string, Tuple<string, int>> m_stocksDictionary = new Dictionary<string, Tuple<string, int>>();
 
-        public Dictionary<string, Tuple<string, string>> stocksDictionary
+        public Dictionary<string, Tuple<string, int>> stocksDictionary
         {
             get{
                 return m_stocksDictionary;
@@ -80,9 +80,9 @@ namespace Server
         }
 
        
-        public void addToTheStockList(string stockName, string price, string shares)
+        public void addToTheStockList(string stockName, string price, int shares)
         {
-            this.m_stocksDictionary.Add(stockname,new Tuple<string,string>(price,shares));
+            this.m_stocksDictionary.Add(stockname,new Tuple<string,int>(price,shares));
         }
 
         // wirte stock's information into the disk
