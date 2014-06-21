@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Server.Yahoo_Finance
 {
-    class stockQuote
+    public class stockQuote
     {
         private string stockQuery;
 

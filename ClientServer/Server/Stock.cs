@@ -38,7 +38,7 @@ namespace Server
         }
 
         // update the price for all the stocks
-        private void updateAllPrice(List<stockQuote> updateList)
+        public void updateAllPrice(List<stockQuote> updateList)
         {
 
         }
