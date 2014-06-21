@@ -17,11 +17,11 @@ namespace Server.Yahoo_Finance
             string query = String.Join("%2C", quotes.Select(s => "%22" + s.StockQuery + "%22").ToArray());
             string url = string.Format(originURL, query);
             XDocument resultXmlDoc = XDocument.Load(url);
-            stockQuote result = xmlProxess(quotes, resultXmlDoc);
+            stockQuote result = xmlProcess(quotes, resultXmlDoc);
             return result;
         }
 
-        private static stockQuote xmlProxess(ObservableCollection<stockQuote> quotes, XDocument resultXmlDoc)
+        private static stockQuote xmlProcess(ObservableCollection<stockQuote> quotes, XDocument resultXmlDoc)
         {
             XElement results = resultXmlDoc.Root.Element("results");
             stockQuote result = null;
