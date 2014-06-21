@@ -11,9 +11,20 @@ namespace Server
     {
         public string stockname;
         public float stockprice;
+        
+        // Stock list and price in memory
+        private Dictionary<string, string> StocksDictionary = new Dictionary<string, string>();
 
-        private List<stockQuote> querys { get; set; }
+        // file's name for stock's information stores in the Disk
+        private string fileStock;
 
+        // file's name for users' information stores in the Disk
+        private string users;
+
+        // querys to update all the stock's price
+        private List<stockQuote> updatequerys { get; set; }
+        
+        // constructor 
         public Stock()
         {
 
@@ -38,9 +49,18 @@ namespace Server
         }
 
         // update the price for all the stocks
-        public void updateAllPrice(List<stockQuote> updateList)
+        public bool updateAllPrice(List<stockQuote> updateList)
         {
+            bool success = false;
 
+            return success;
+
+        }
+
+       
+        public void addToTheStockList(string stockName, string price)
+        {
+            this.StocksDictionary.Add(stockname,price);
         }
 
     }
