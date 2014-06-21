@@ -11,16 +11,26 @@ namespace Server
     {
         public string stockname;
         public float stockprice;
+
+        public class stockInfo
+        {
+            public string price { get; set; }
+            public int shares { get; set; }
+        }
         
         // Stock list and price in memory
         //Key:stock' name, value: price, shares
-        private Dictionary<string, Tuple<string, int>> m_stocksDictionary = new Dictionary<string, Tuple<string, int>>();
+        private Dictionary<string, stockInfo> m_stocksDictionary = new Dictionary<string, stockInfo>();
 
-        public Dictionary<string, Tuple<string, int>> stocksDictionary
+        public Dictionary<string, stockInfo> stocksDictionary
         {
             get{
                 return m_stocksDictionary;
                }
+            set
+            {
+                m_stocksDictionary = value;
+            }
         }
 
         // file's name for stock's information stores in the Disk
@@ -82,7 +92,10 @@ namespace Server
        
         public void addToTheStockList(string stockName, string price, int shares)
         {
-            this.m_stocksDictionary.Add(stockname,new Tuple<string,int>(price,shares));
+            stockInfo info = new stockInfo();
+            info.price = price;
+            info.shares = shares;
+            this.m_stocksDictionary.Add(stockName, info);
         }
 
         // wirte stock's information into the disk
