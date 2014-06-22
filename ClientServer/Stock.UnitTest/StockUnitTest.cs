@@ -58,5 +58,26 @@ namespace StockUnitTest
 
         }
 
+        // Test for get file
+        [TestMethod]
+        public void getStockDataInFileTest()
+        {
+            Stock test = new Stock();
+            test.getStockDataFromFile("test.txt");
+            
+            foreach(String key in test.stocksDictionary.Keys){
+                Console.WriteLine("{0} {1} {2}", key, test.stocksDictionary[key].price, test.stocksDictionary[key].shares);
+            }
+
+            if (test.updateAllPrice())
+            {           
+                test.writeAllStockData("test.txt");
+            }
+            else
+            {
+                Console.WriteLine("false");
+            }
+            
+        }
     }
 }

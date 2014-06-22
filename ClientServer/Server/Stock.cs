@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Server.Yahoo_Finance;
+using System.IO;
 //
 namespace Server
 {
@@ -41,6 +42,8 @@ namespace Server
 
         // querys to update all the stock's price
         private List<stockQuote> updatequerys { get; set; }
+
+
         
         // constructor 
         public Stock()
@@ -70,23 +73,27 @@ namespace Server
 
         }
 
-        // update the price for all the stocks
-        // update information should first write into the disk
-        // stocksDictionary should use getStockDataFromFile to update info
-        public bool updateAllPrice(Dictionary<string, string> stocksDic)
+        // update the price for all the stocks in the memoery (next step should store in the file)
+        public bool updateAllPrice()
         {
-            bool success = false;
-            List<stockQuote> updateQueries = new List<stockQuote>();
-            foreach (string key in stocksDic.Keys)
+      
+            foreach (string key in this.stocksDictionary.Keys)
             {
+                List<stockQuote> updateQueries = new List<stockQuote>();
                 updateQueries.Add(new stockQuote(key));
+                getStockData.getData(updateQueries);
+                if (key == updateQueries[0].Name)
+                {
+                    this.stocksDictionary[key].price = updateQueries[0].LastTradePrice.ToString();
+                }
+                else
+                {
+                    return false;
+                }
+                
             }
-            getStockData.getData(updateQueries);
-
-            // write into the file
-            writeAllStockData(fileStock, stocksDictionary);
             
-            return success;
+            return true;
 
         }
 
@@ -106,15 +113,15 @@ namespace Server
         }
 
         // wirte stock's information into the disk
-        public bool writeAllStockData(String FileName, Dictionary<string, stockInfo> dictionary){
+        public bool writeAllStockData(String FileName){
             try
             {
-                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@FileName, true))
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@FileName))
                 {
-                    foreach (String key in dictionary.Keys)
+                    foreach (String key in this.stocksDictionary.Keys)
                     {
 
-                        file.WriteLine("{0} {1} {2}", key, dictionary[key].price, dictionary[key].shares);
+                        file.WriteLine("{0} {1} {2}", key, this.stocksDictionary[key].price, this.stocksDictionary[key].shares);
                     }
 
                 }
@@ -128,6 +135,7 @@ namespace Server
         }
 
         // write new data into the file when client first queries the stcok
+        // Need to consider synchronize issue for shared resoures --- "file" and variable"stocksDictionary"
         public bool writeNewStockData(String FileName, String stockName)
         {
             try
@@ -146,6 +154,7 @@ namespace Server
             }
             catch (Exception e)
             {
+                Console.WriteLine(e.Message);
                 return false;
             }
 
@@ -153,10 +162,34 @@ namespace Server
         }
 
         // get stock's information from the disk
+        // only used when server is shut down and restar again
         public bool getStockDataFromFile(String FileName)
         {
-            bool success = false;
-            return success;
+            
+            try
+            {
+               
+                using (StreamReader reader = new StreamReader(FileName))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] words = line.Split(' ');
+                        stockInfo info = new stockInfo();
+                        info.price = words[1];
+                        info.shares = Convert.ToInt32(words[2]);
+                        stocksDictionary.Add(words[0], info);
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+            return true;
         }
 
 
