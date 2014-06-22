@@ -13,7 +13,7 @@ namespace Server.Yahoo_Finance
 
         private decimal? lastTradePrice;
         private string name;
-
+        private string m_Fullname;
 
         public stockQuote(string nameOfStock)
         {
@@ -38,12 +38,25 @@ namespace Server.Yahoo_Finance
         {
             get 
             { 
-                return name; 
+                return stockQuery; 
             }
             set
             {
-                name = value;
+                stockQuery = value;
                
+            }
+        }
+
+        public string FullName
+        {
+            get
+            {
+                return m_Fullname;
+            }
+            set
+            {
+                m_Fullname = value;
+
             }
         }
 

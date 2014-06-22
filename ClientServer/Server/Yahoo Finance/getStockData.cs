@@ -38,7 +38,7 @@ namespace Server.Yahoo_Finance
                 {
                     XElement q = results.Elements("quote").First(s => s.Attribute("symbol").Value == quote.StockQuery);
 
-                    quote.Name = q.Element("Name").Value;
+                    quote.FullName = q.Element("Name").Value;
                     quote.LastTradePrice = GetDecimal(q.Element("LastTradePriceOnly").Value);
                 }
                 catch(Exception e)
