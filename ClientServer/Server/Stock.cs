@@ -84,25 +84,72 @@ namespace Server
             getStockData.getData(updateQueries);
 
             // write into the file
-            writeStockDataInFile(fileStock, updateQueries);
+            writeAllStockData(fileStock, stocksDictionary);
             
             return success;
 
         }
 
-       
-        public void addToTheStockList(string stockName, string price, int shares)
+       // add stock into the dictionary with initail shares 1000 and up-to-date price from Yahoo.
+       // This function is private. Use writeNewStockData() to both add new stock in memory and file
+        private bool addToTheStockList(string stockName)
         {
             stockInfo info = new stockInfo();
-            info.price = price;
-            info.shares = shares;
-            this.m_stocksDictionary.Add(stockName, info);
+            info.price = getPriceFromYahoo(stockName);
+            if (info.price != null)
+            {
+                info.shares = 1000;
+                this.m_stocksDictionary.Add(stockName, info);
+                return true;
+            }
+            return false;
         }
 
         // wirte stock's information into the disk
-        public bool writeStockDataInFile(String FileName, List<stockQuote> data){
-            bool success = false;
-            return success;
+        public bool writeAllStockData(String FileName, Dictionary<string, stockInfo> dictionary){
+            try
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@FileName, true))
+                {
+                    foreach (String key in dictionary.Keys)
+                    {
+
+                        file.WriteLine("{0} {1} {2}", key, dictionary[key].price, dictionary[key].shares);
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        // write new data into the file when client first queries the stcok
+        public bool writeNewStockData(String FileName, String stockName)
+        {
+            try
+            {
+                if (addToTheStockList(stockName))
+                {
+                    using (System.IO.StreamWriter file = new System.IO.StreamWriter(@FileName, true))
+                    {
+                        file.WriteLine("{0} {1} {2}", stockName, stocksDictionary[stockName].price, stocksDictionary[stockName].shares);
+
+                    }
+                }else{
+                    return false;
+                }
+
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return true;
         }
 
         // get stock's information from the disk

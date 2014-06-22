@@ -9,7 +9,7 @@ namespace StockUnitTest
     [TestClass]
     public class StockTest
     {
-
+        
         /**[TestMethod]
         public void TestMethod1()
         {
@@ -48,5 +48,15 @@ namespace StockUnitTest
                 Console.WriteLine("stock does not exist");
 
         }
+
+        // Test for write file
+        [TestMethod]
+        public void writeStockDataInFileTest()
+        {
+            Stock test = new Stock();
+            test.writeNewStockData("test.txt", "FB");
+
+        }
+
     }
 }
