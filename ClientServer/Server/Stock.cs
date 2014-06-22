@@ -113,19 +113,7 @@ namespace Server
         }
 
 
-        // get users' information from the disk
-        public bool getUserDataFromFile(String FileName)
-        {
-            bool success = false;
-            return success;
-        }
 
-        // wirte users information into the disk
-        private bool writeUserDataInFile(String FileName, List<Users> data)
-        {
-            bool success = false;
-            return success;
-        }
 
         //check if stock already in the tracing list
         //Server can call this function to check
