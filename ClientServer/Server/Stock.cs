@@ -37,8 +37,7 @@ namespace Server
         // file's name for stock's information stores in the Disk
         private string fileStock;
 
-        // file's name for users' information stores in the Disk
-        private string fileusers;
+
         
         // constructor 
         public Stock()
