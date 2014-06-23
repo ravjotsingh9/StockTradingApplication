@@ -7,8 +7,14 @@ namespace Server
 {
     class Users
     {
-        private string userName;
-        private string cashBalance;
+        //Dictionary<string, int> stockShares stores stock's name and shares
+        public class userInfo{
+            public string cashBalance;
+            public Dictionary<string, int> stockShares;
+        }
+
+        private Dictionary<string, userInfo> m_userDictionary = new Dictionary<string, userInfo>();
+
 
         // get users' information from the disk
         public bool getUserDataFromFile(String FileName)

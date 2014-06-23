@@ -10,8 +10,8 @@ namespace Server
 {
     public class Stock
     {
-        public string stockname;
-        public float stockprice;
+        //public string stockname;
+        //public float stockprice;
 
         public class stockInfo
         {
@@ -21,7 +21,7 @@ namespace Server
         
         // Stock list and price in memory
         //Key:stock' name, value: price, shares
-        private Dictionary<string, stockInfo> m_stocksDictionary = new Dictionary<string, stockInfo>();
+        private Dictionary<string, stockInfo> m_stocksDictionary ;
 
         public Dictionary<string, stockInfo> stocksDictionary
         {
@@ -39,16 +39,11 @@ namespace Server
 
         // file's name for users' information stores in the Disk
         private string fileusers;
-
-        // querys to update all the stock's price
-        private List<stockQuote> updatequerys { get; set; }
-
-
         
         // constructor 
         public Stock()
         {
-
+            stocksDictionary = new Dictionary<string, stockInfo>();
         }
 
         ///You can use this function to test the stock value
