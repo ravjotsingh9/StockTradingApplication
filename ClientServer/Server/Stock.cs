@@ -195,9 +195,9 @@ namespace Server
 
 
 
-        //check if stock already in the tracing list
+        //check if stock already in the tracing list(stockDictionary)
         //Server can call this function to check
-        public bool checkInStockList(string name)
+        public bool checkInStockDic(string name)
         {
             return stocksDictionary.ContainsKey(name);
         }
