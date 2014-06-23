@@ -217,5 +217,47 @@ namespace Server
             }
         }
 
+        // decrease shares number in the stocksDictionary (users' stock's share quantity should increase)
+        public bool clientBuyShares(string stockName, int quantity)
+        {
+            if (this.stocksDictionary.ContainsKey(stockName))
+            {
+                
+                if (this.stocksDictionary[stockName].shares < quantity)
+                {
+                    return false;
+                }
+                else
+                {
+                    this.stocksDictionary[stockName].shares -= quantity;
+                    return true;
+                }
+               
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
+
+        // increase shares number in the stocksDictionary (users' stock's share quantity should decrease)
+        public bool clientSellShares(string stockName, int quantity)
+        {
+            if (this.stocksDictionary.ContainsKey(stockName))
+            {
+
+             
+                    this.stocksDictionary[stockName].shares += quantity;
+                    return true;
+
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
     }
 }
