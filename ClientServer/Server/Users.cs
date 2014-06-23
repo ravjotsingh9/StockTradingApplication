@@ -5,15 +5,32 @@ using System.Text;
 
 namespace Server
 {
-    class Users
+    public class Users
     {
-        //Dictionary<string, int> stockShares stores stock's name and shares
-        public class userInfo{
-            public string cashBalance;
-            public Dictionary<string, int> stockShares;
+        
+        
+       /** //Dictionary<string, int> stockShares stores stock's name and shares
+        public class userInfo
+        {
+            public string cashBalance { get; set; }
+            public Dictionary<string, int> stockShares { get; set; }
+        }**/
+
+        /**private Dictionary<string, userInfo> m_userDictionary;
+        public Dictionary<string, userInfo> UserDictionary
+        {
+            get{
+                return m_userDictionary;
+            }
+            set{
+                m_userDictionary = value;
+            }
         }
 
-        private Dictionary<string, userInfo> m_userDictionary = new Dictionary<string, userInfo>();
+        public Users()
+        {
+            UserDictionary = new Dictionary<string, userInfo>();
+        }**/
 
 
         // get users' information from the disk
