@@ -33,6 +33,9 @@ namespace Server
         }**/
 
 
+        // file's name for users' information stores in the Disk
+        private string fileusers;
+
         // get users' information from the disk
         public bool getUserDataFromFile(String FileName)
         {
