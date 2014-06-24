@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 
@@ -57,16 +58,99 @@ namespace Server
         // get users' information from the disk when server restart
         public bool getUserDataFromFile(String FileName)
         {
-            bool success = false;
-            return success;
+            try
+            {
+
+                using (StreamReader reader = new StreamReader(FileName))
+                {
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        string[] words = line.Split(' ');
+                        string key = words[0];
+                        double balance = Convert.ToDouble(words[1]);
+                        userInfo info = new userInfo();
+                        info.cashBalance = balance;
+                        string line2;
+                        while((line2 = reader.ReadLine()) != "-----"){
+                            string[] stocksList = line2.Split(' ');
+                            
+                            info.StockShares.Add(stocksList[0], Convert.ToInt32(stocksList[1]));
+                          
+                        }
+                       
+                        this.UserDictionary.Add(key, info);
+                      
+                    }
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+
+            return true;
         }
 
-        // wirte users information into the disk
-        private bool writeUserDataInFile(String FileName, List<Users> data)
+        // wirte all users information into the disk
+        public bool writeAllUserData(String FileName)
         {
-            bool success = false;
-            return success;
+            try
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@FileName))
+                {
+                    foreach (string key in this.UserDictionary.Keys)
+                    {
+
+                        file.WriteLine("{0} {1}", key, this.UserDictionary[key].cashBalance);
+                        foreach (string key2 in this.UserDictionary[key].StockShares.Keys)
+                        {
+                            file.WriteLine("{0} {1}", key2, this.UserDictionary[key].StockShares[key2]);
+                        }
+                        
+                        file.WriteLine("-----");
+                    }
+
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return true;
         }
+
+        // append single user's information into the disk
+        public bool writeSingleUserData(string FileName, string userName)
+        {
+            try
+            {
+                using (System.IO.StreamWriter file = new System.IO.StreamWriter(@FileName, true))
+                {
+
+
+                    file.WriteLine("{0} {1}", userName, this.UserDictionary[userName].cashBalance);
+                    foreach (string key2 in this.UserDictionary[userName].StockShares.Keys)
+                        {
+                            file.WriteLine("{0} {1}", key2, this.UserDictionary[userName].StockShares[key2]);
+                        }
+
+                        file.WriteLine("-----");
+    
+
+                }
+            }
+            catch (Exception e)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
 
         // Modify user's cash balance, addORminus: false:decrease balance, true:increase balance
         public bool modifyCash(string userName, double amount, bool addORminus)
