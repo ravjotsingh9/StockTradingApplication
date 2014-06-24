@@ -14,7 +14,18 @@ namespace Server
         public class userInfo
         {
             public double cashBalance { get; set; }
-            public Dictionary<string, int> stockShares { get; set; }
+            private Dictionary<string, int> m_stockShares = new Dictionary<string, int>();
+            public Dictionary<string, int> StockShares
+            {
+                get
+                {
+                    return m_stockShares;
+                }
+                set
+                {
+                    m_stockShares = value;
+                }
+            }
         }
 
         private Dictionary<string, userInfo> m_userDictionary;
@@ -125,9 +136,8 @@ namespace Server
         {
             try
             {
-                userInfo temp = new userInfo();
-                temp.stockShares[stocKName] = shares;
-                this.UserDictionary.Add(userName, temp);
+                userInfo temp = this.UserDictionary[userName];
+                temp.StockShares.Add(stocKName, shares);
                 return true;
             }
             catch (Exception e)
@@ -148,10 +158,10 @@ namespace Server
                 {
                     if (addORdecrese)
                     {
-                        UserDictionary[userName].stockShares[stocKName] += shares;
+                        UserDictionary[userName].StockShares[stocKName] += shares;
                     }else
                     {
-                        UserDictionary[userName].stockShares[stocKName] -= shares;
+                        UserDictionary[userName].StockShares[stocKName] -= shares;
                     }
                     return true;
                 }
