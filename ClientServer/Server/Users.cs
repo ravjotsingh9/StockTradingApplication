@@ -43,7 +43,7 @@ namespace Server
         // file's name for users' information stores in the Disk
         private string fileusers;
 
-        // get users' information from the disk
+        // get users' information from the disk when server restart
         public bool getUserDataFromFile(String FileName)
         {
             bool success = false;
@@ -106,6 +106,18 @@ namespace Server
                 return false;
             }
             
+        }
+
+        public bool ifUserExist(string name)
+        {
+            if (UserDictionary.ContainsKey(name))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
        // add new stock and shares for a user
