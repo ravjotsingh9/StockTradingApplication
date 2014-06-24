@@ -10,8 +10,8 @@ namespace Server
 {
     public class Stock
     {
-        //public string stockname;
-        //public float stockprice;
+        public string stockname;
+        public float stockprice;
 
         public class stockInfo
         {

@@ -9,19 +9,9 @@ namespace Server
     {
         
         
-        //Dictionary<string, int> stockShares stores stock's name and shares
-        public class userInfo
-        {
-            public string cashBalance { get; set; }
-            public Dictionary<string, int> stockShares { get; set; }
-            public userInfo()
-            {
-                stockShares = new Dictionary<string, int>();
-            }
-        }
 
-        private Dictionary<string, userInfo> m_userDictionary;
-        public Dictionary<string, userInfo> UserDictionary
+        private Dictionary<string, double> m_userDictionary;
+        public Dictionary<string, double> UserDictionary
         {
             get{
                 return m_userDictionary;
@@ -33,7 +23,7 @@ namespace Server
 
         public Users()
         {
-            UserDictionary = new Dictionary<string, userInfo>();
+            UserDictionary = new Dictionary<string, double>();
         }
 
 
@@ -54,5 +44,87 @@ namespace Server
             return success;
         }
 
+        // Modify user's cash balance, addORminus: false:decrease balance, true:increase balance
+        public bool modifyCash(string userName, double amount, bool addORminus)
+        {
+            if (UserDictionary.ContainsKey(userName))
+            {
+                if (addORminus)
+                {
+                    UserDictionary[userName] += amount;
+                    return true;
+                }
+                else
+                {
+                    if (UserDictionary[userName] >= amount)
+                    {
+                        UserDictionary[userName] -= amount;
+                        return true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+  
+                }
+
+                
+            }
+            else
+            {
+                return false;
+            }
+
+            
+        }
+
+
+        // add user to the UserDictionary
+        public bool addUser(string name)
+        {
+            if (!UserDictionary.ContainsKey(name))
+            {
+               
+                UserDictionary.Add(name, 1000);
+                return true;
+            }
+            else{
+                return false;
+            }
+            
+        }
+
+  /**      // add new stock and shares for a user
+        public bool addStcokForUser(string userName, string stocKName, int shares)
+        {
+            try
+            {
+                UserDictionary[userName].StockShares.Add(stocKName, shares);
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+
+        // Modify user's exist stock's shares, addORminus: false:decrease , true:increase
+        public bool modifyShares(string userName, string stocKName, int shares, bool addORdecrese)
+        {
+            
+            try
+            {
+                
+              
+                return true;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+                return false;
+            }
+        }
+        **/
     }
 }
