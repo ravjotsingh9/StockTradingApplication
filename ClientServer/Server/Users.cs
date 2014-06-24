@@ -7,8 +7,18 @@ namespace Server
 {
     public class Users
     {
-        
-        
+
+        public struct Tuple<T1, T2>
+        {
+            public readonly T1 Item1;
+            public readonly T2 Item2;
+
+            public Tuple(T1 item1, T2 item2)
+            {
+                Item1 = item1;
+                Item2 = item2;
+            }
+        }
 
         private Dictionary<string, double> m_userDictionary;
         public Dictionary<string, double> UserDictionary
@@ -25,6 +35,9 @@ namespace Server
         {
             UserDictionary = new Dictionary<string, double>();
         }
+
+        // Use to store user's stock and shares' number
+        public Dictionary<Tuple<string,string>, int> UserStockDictionary = new Dictionary<Tuple<string,string>, int>();
 
 
         // file's name for users' information stores in the Disk
@@ -94,12 +107,13 @@ namespace Server
             
         }
 
-  /**      // add new stock and shares for a user
+       // add new stock and shares for a user
         public bool addStcokForUser(string userName, string stocKName, int shares)
         {
             try
             {
-                UserDictionary[userName].StockShares.Add(stocKName, shares);
+                var key = new Tuple<string, string>(userName, stocKName);
+                UserStockDictionary.Add(key, shares);
                 return true;
             }
             catch (Exception e)
@@ -112,12 +126,28 @@ namespace Server
         // Modify user's exist stock's shares, addORminus: false:decrease , true:increase
         public bool modifyShares(string userName, string stocKName, int shares, bool addORdecrese)
         {
-            
+            var key = new Tuple<string, string>(userName, stocKName);
             try
             {
                 
+                if (UserStockDictionary.ContainsKey(key))
+                {
+                    if (addORdecrese)
+                    {
+                         UserStockDictionary[key] -=
+                    }
+                    else
+                    {
+                       
+                    }
+                    return true;
+                }
+                else
+                {
+                    return false;
+                }
               
-                return true;
+                
             }
             catch (Exception e)
             {
@@ -125,6 +155,6 @@ namespace Server
                 return false;
             }
         }
-        **/
+        
     }
 }
