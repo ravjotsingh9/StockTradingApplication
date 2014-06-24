@@ -13,7 +13,7 @@ namespace Server
         //Dictionary<string, int> stockShares stores stock's name and shares
         public class userInfo
         {
-            public string cashBalance { get; set; }
+            public double cashBalance { get; set; }
             public Dictionary<string, int> stockShares { get; set; }
         }
 
@@ -64,14 +64,14 @@ namespace Server
             {
                 if (addORminus)
                 {
-                    UserDictionary[userName] += amount;
+                    UserDictionary[userName].cashBalance += amount;
                     return true;
                 }
                 else
                 {
-                    if (UserDictionary[userName] >= amount)
+                    if (UserDictionary[userName].cashBalance >= amount)
                     {
-                        UserDictionary[userName] -= amount;
+                        UserDictionary[userName].cashBalance -= amount;
                         return true;
                     }
                     else
@@ -97,8 +97,9 @@ namespace Server
         {
             if (!UserDictionary.ContainsKey(name))
             {
-               
-                UserDictionary.Add(name, 1000);
+                userInfo tempInfo = new userInfo();
+                tempInfo.cashBalance = 1000;
+                UserDictionary.Add(name, tempInfo);
                 return true;
             }
             else{
@@ -112,8 +113,9 @@ namespace Server
         {
             try
             {
-                var key = new Tuple<string, string>(userName, stocKName);
-                UserStockDictionary.Add(key, shares);
+                userInfo temp = new userInfo();
+                temp.stockShares[stocKName] = shares;
+                this.UserDictionary.Add(userName, temp);
                 return true;
             }
             catch (Exception e)
@@ -126,19 +128,18 @@ namespace Server
         // Modify user's exist stock's shares, addORminus: false:decrease , true:increase
         public bool modifyShares(string userName, string stocKName, int shares, bool addORdecrese)
         {
-            var key = new Tuple<string, string>(userName, stocKName);
+            
             try
             {
                 
-                if (UserStockDictionary.ContainsKey(key))
+                if (this.UserDictionary.ContainsKey(userName))
                 {
                     if (addORdecrese)
                     {
-                         UserStockDictionary[key] -=
-                    }
-                    else
+                        UserDictionary[userName].stockShares[stocKName] += shares;
+                    }else
                     {
-                       
+                        UserDictionary[userName].stockShares[stocKName] -= shares;
                     }
                     return true;
                 }

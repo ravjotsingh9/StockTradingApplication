@@ -12,9 +12,9 @@ namespace UnitTest
         {
             Users test = new Users();
             test.addUser("hello");
-            Console.WriteLine("User:hello's balance: {0}", test.UserDictionary["hello"]);
+            Console.WriteLine("User:hello's balance: {0}", test.UserDictionary["hello"].cashBalance);
             test.modifyCash("hello", 100, true);
-            Console.WriteLine("User:hello's balance: {0}", test.UserDictionary["hello"]);
+            Console.WriteLine("User:hello's balance: {0}", test.UserDictionary["hello"].cashBalance);
      
         }
         
