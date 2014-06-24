@@ -15,6 +15,7 @@ namespace UnitTest
             Console.WriteLine("User:hello's balance: {0}", test.UserDictionary["hello"]);
             test.modifyCash("hello", 100, true);
             Console.WriteLine("User:hello's balance: {0}", test.UserDictionary["hello"]);
+     
         }
         
     }

@@ -8,20 +8,18 @@ namespace Server
     public class Users
     {
 
-        public struct Tuple<T1, T2>
+        
+        
+        //Dictionary<string, int> stockShares stores stock's name and shares
+        public class userInfo
         {
-            public readonly T1 Item1;
-            public readonly T2 Item2;
-
-            public Tuple(T1 item1, T2 item2)
-            {
-                Item1 = item1;
-                Item2 = item2;
-            }
+            public string cashBalance { get; set; }
+            public Dictionary<string, int> stockShares { get; set; }
         }
 
-        private Dictionary<string, double> m_userDictionary;
-        public Dictionary<string, double> UserDictionary
+        private Dictionary<string, userInfo> m_userDictionary;
+        public Dictionary<string, userInfo> UserDictionary
+
         {
             get{
                 return m_userDictionary;
@@ -33,11 +31,13 @@ namespace Server
 
         public Users()
         {
-            UserDictionary = new Dictionary<string, double>();
+        
+
+            UserDictionary = new Dictionary<string, userInfo>();
         }
 
-        // Use to store user's stock and shares' number
-        public Dictionary<Tuple<string,string>, int> UserStockDictionary = new Dictionary<Tuple<string,string>, int>();
+
+        
 
 
         // file's name for users' information stores in the Disk
