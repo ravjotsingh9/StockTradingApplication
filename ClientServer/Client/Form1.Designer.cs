@@ -36,7 +36,7 @@
             this.lblrate = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.txtStockname = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
+            this.Query = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.lblusernameResponse = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
@@ -55,7 +55,7 @@
             this.groupBox1.Controls.Add(this.lblrate);
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Controls.Add(this.txtStockname);
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.Query);
             this.groupBox1.Location = new System.Drawing.Point(28, 106);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(447, 145);
@@ -124,15 +124,15 @@
             this.txtStockname.Size = new System.Drawing.Size(100, 20);
             this.txtStockname.TabIndex = 6;
             // 
-            // button1
+            // Query
             // 
-            this.button1.Location = new System.Drawing.Point(335, 31);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 5;
-            this.button1.Text = "Query";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.Query.Location = new System.Drawing.Point(335, 31);
+            this.Query.Name = "Query";
+            this.Query.Size = new System.Drawing.Size(75, 23);
+            this.Query.TabIndex = 5;
+            this.Query.Text = "Query";
+            this.Query.UseVisualStyleBackColor = true;
+            this.Query.Click += new System.EventHandler(this.btnQuery_Click);
             // 
             // groupBox2
             // 
@@ -180,7 +180,7 @@
             this.btnLogin.TabIndex = 14;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = true;
-            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click_1);
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click);
             // 
             // Form1
             // 
@@ -211,7 +211,7 @@
         private System.Windows.Forms.Label lblrate;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox txtStockname;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button Query;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.Label lblusernameResponse;
         private System.Windows.Forms.Label label3;

@@ -19,7 +19,7 @@ namespace Client
             InitializeComponent();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnQuery_Click(object sender, EventArgs e)
         {
             if(txtuser.Text== "" || lblusernameResponse.Text!= "0k")
             {
@@ -83,7 +83,7 @@ namespace Client
             }
         }
 
-        private void btnLogin_Click_1(object sender, EventArgs e)
+        private void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txtuser.Text;
             if(username == "" )
