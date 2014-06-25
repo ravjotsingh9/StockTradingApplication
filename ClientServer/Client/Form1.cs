@@ -53,7 +53,7 @@ namespace Client
                         try
                         {
                             snder.Connect(remoteEP);
-                            byte[] msg = Encoding.ASCII.GetBytes(txtuser.Text + ":" + txtStockname.Text + "<EOF>");
+                            byte[] msg = Encoding.ASCII.GetBytes("QUERY:"+txtuser.Text + ":" + txtStockname.Text + "<EOF>");
                             int bytesSent = snder.Send(msg);
                             int bytesRec = snder.Receive(bytes);
                             String Ratereponse = Encoding.ASCII.GetString(bytes, 0, bytesRec);
