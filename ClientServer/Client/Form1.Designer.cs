@@ -71,6 +71,7 @@
             this.btnSell.TabIndex = 15;
             this.btnSell.Text = "Sell";
             this.btnSell.UseVisualStyleBackColor = true;
+            this.btnSell.Click += new System.EventHandler(this.btnSell_Click);
             // 
             // label5
             // 
@@ -96,6 +97,7 @@
             this.btnBuy.TabIndex = 9;
             this.btnBuy.Text = "Buy";
             this.btnBuy.UseVisualStyleBackColor = true;
+            this.btnBuy.Click += new System.EventHandler(this.btnBuy_Click);
             // 
             // lblrate
             // 
@@ -178,6 +180,7 @@
             this.btnLogin.TabIndex = 14;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = true;
+            this.btnLogin.Click += new System.EventHandler(this.btnLogin_Click_1);
             // 
             // Form1
             // 
