@@ -16,18 +16,11 @@ namespace Server
 {
     public partial class Form1 : Form
     {
-        
-        /*    
-        byte[] bytes;
-            IPHostEntry ipHostInfo;
-            IPAddress ipAddress;
-            IPEndPoint localEndPoint;
-          */  
-        string data;
-        
-        List<Stock> Stocklist;
-        volatile bool stop;
-        Thread thread;
+        static string data;
+        static List<Stock> Stocklist;
+        static volatile bool stop;
+        static Thread thread = new Thread(new ThreadStart(serverthread));
+
         public Form1()
         {
             Stocklist  = new List<Stock>();
@@ -36,22 +29,20 @@ namespace Server
             obj.stockname = "abc";
             obj.stockprice = 10;
             Stocklist.Add(obj);
-            button2.Enabled = false;
+            //button2.Enabled = false;
             stop = false;
-
         }
 
         private void button1_Click(object sender, EventArgs e)
-        {
-            thread = new Thread(new ThreadStart(serverthread));
+        {    
             label1.Text = "Running";
             button1.Enabled = false;
-            button2.Enabled = true;
+            //button2.Enabled = true;
             thread.Start();
         }
-        public void serverthread()
-        {
 
+        static public void serverthread()
+        {
             byte [] bytes = new byte[1024];
             IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
             IPAddress ipAddress = ipHostInfo.AddressList[0];
@@ -139,10 +130,10 @@ namespace Server
             }
             
             thread.Abort();
-            
+           
         }
 
-        public string getstockvalue(string data)
+        static public string getstockvalue(string data)
         {
             int i = 0;
             while (Stocklist.Count > i)
@@ -156,7 +147,7 @@ namespace Server
             return "null";
         }
 
-        public string setstockvalue(string data)
+        static public string setstockvalue(string data)
         {
             string [] splt = data.Split(':');
             string sname = splt[0];
@@ -183,7 +174,9 @@ namespace Server
         
         private void button2_Click(object sender, EventArgs e)
         {
-            // Establish the remote endpoint for the socket.
+            if (thread.IsAlive == true)
+            {
+                // Establish the remote endpoint for the socket.
                 IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
                 IPAddress ipAddress = ipHostInfo.AddressList[0];
                 IPEndPoint remoteEP = new IPEndPoint(ipAddress, 11001);
@@ -199,17 +192,21 @@ namespace Server
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message); 
+                    MessageBox.Show(ex.Message);
                 }
-                snder.Shutdown(SocketShutdown.Both);    
-            snder.Close();
-            
-                button2.Enabled = false;
-                button1.Enabled = true;
-                
-        }
+                snder.Shutdown(SocketShutdown.Both);
+                snder.Close();
 
-                
+                //button2.Enabled = false;
+                button1.Enabled = true;
+            }  
+            else
+
+            {
+                Application.Exit();
+            }
+        }
+        
     }
 
 }
