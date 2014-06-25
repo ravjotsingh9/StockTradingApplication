@@ -16,13 +16,14 @@ namespace Server
 {
     public partial class Form1 : Form
     {
-        static string data;
-        static List<Stock> Stocklist;
-        static volatile bool stop;
-        static Thread thread = new Thread(new ThreadStart(serverthread));
+        
+        List<Stock> Stocklist;
+        volatile bool stop;
+        Thread thread;
 
         public Form1()
         {
+            thread = new Thread(new ThreadStart(serverthread));
             Stocklist  = new List<Stock>();
             InitializeComponent();
             Stock obj = new Stock();
@@ -41,7 +42,7 @@ namespace Server
             thread.Start();
         }
 
-        static public void serverthread()
+        public void serverthread()
         {
             byte [] bytes = new byte[1024];
             IPHostEntry ipHostInfo = Dns.Resolve(Dns.GetHostName());
@@ -67,6 +68,9 @@ namespace Server
                             break;
                         }
                     }
+                    ThreadPool.QueueUserWorkItem(servicethread, (Object)soc);
+
+                    /*
                     data = null;
                     while (true)
                     {
@@ -122,6 +126,7 @@ namespace Server
 
                     soc.Shutdown(SocketShutdown.Both);
                     soc.Close();
+                     */ 
                 }
             }
             catch (Exception ex)
@@ -133,7 +138,69 @@ namespace Server
            
         }
 
-        static public string getstockvalue(string data)
+        private void servicethread(Object socket)
+        {
+            Socket soc = (Socket)socket;
+            string data = null;
+            byte[] bytes;
+            while (true)
+            {
+                bytes = new byte[1024];
+                int bytesRead = soc.Receive(bytes);
+                data = data + Encoding.ASCII.GetString(bytes, 0, bytesRead);
+                if (data.EndsWith("<EOF>"))
+                {
+                    break;
+                }
+
+            }
+            //Thread.Sleep(5000);
+            data = data.Substring(0, data.Length - 5);
+            if (data == "set")
+            {
+                soc.Send(Encoding.ASCII.GetBytes("ok"));
+                data = "";
+                while (true)
+                {
+                    bytes = new byte[1024];
+                    int bytesRead = soc.Receive(bytes);
+                    data = data + Encoding.ASCII.GetString(bytes, 0, bytesRead);
+                    if (data.EndsWith("<EOF>"))
+                    {
+                        break;
+                    }
+
+                }
+                data = data.Substring(0, data.Length - 5);
+                byte[] msg;
+                if ((msg = Encoding.ASCII.GetBytes(setstockvalue(data))) != null)
+                {
+                    soc.Send(msg);
+                }
+            }
+            else
+            {
+                byte[] msg;
+                string val;
+
+                if ((val = getstockvalue(data)) != "null")
+                {
+                    msg = Encoding.ASCII.GetBytes(val);
+                }
+                else
+                {
+                    data = "Not-Found";
+                    msg = Encoding.ASCII.GetBytes(data);
+                    //soc.Send(msg);
+                }
+                soc.Send(msg);
+            }
+
+            soc.Shutdown(SocketShutdown.Both);
+            soc.Close();
+        }
+
+        public string getstockvalue(string data)
         {
             int i = 0;
             while (Stocklist.Count > i)
@@ -147,7 +214,7 @@ namespace Server
             return "null";
         }
 
-        static public string setstockvalue(string data)
+        public string setstockvalue(string data)
         {
             string [] splt = data.Split(':');
             string sname = splt[0];
