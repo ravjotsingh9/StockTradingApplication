@@ -36,7 +36,7 @@ namespace Server
             obj.stockname = "abc";
             obj.stockprice = 10;
             Stocklist.Add(obj);
-            //button2.Enabled = false;
+            button2.Enabled = false;
             stop = false;
 
         }
@@ -46,7 +46,7 @@ namespace Server
             thread = new Thread(new ThreadStart(serverthread));
             label1.Text = "Running";
             button1.Enabled = false;
-            //button2.Enabled = true;
+            button2.Enabled = true;
             thread.Start();
         }
         public void serverthread()

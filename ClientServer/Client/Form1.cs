@@ -20,7 +20,7 @@ namespace Client
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if(txtstockname.Text  == "")
+            if(txtStockname.Text  == "")
             {
                 MessageBox.Show("Stock Name cannot be empty.","Please provide the stock name");
                 return;
@@ -42,7 +42,7 @@ namespace Client
                 try 
                 {
                     snder.Connect(remoteEP);
-                    byte[] msg = Encoding.ASCII.GetBytes(txtstockname.Text +"<EOF>");
+                    byte[] msg = Encoding.ASCII.GetBytes(txtStockname.Text +"<EOF>");
                     int bytesSent = snder.Send(msg);
                     int bytesRec = snder.Receive(bytes);
                     lblrate.Text = Encoding.ASCII.GetString(bytes, 0, bytesRec);
@@ -68,6 +68,17 @@ namespace Client
             {
                 MessageBox.Show(exx.ToString());
             }
+        }
+
+       
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnLogin_Click(object sender, EventArgs e)
+        {
+            
         }
     }
 }
