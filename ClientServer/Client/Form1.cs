@@ -83,6 +83,20 @@ namespace Client
             }
         }
 
+        private string interpretRate(String msg)
+        {
+            if (msg != null)
+            {
+                String[] Rateresponse = Regex.Split(msg, ":");
+                msg = Rateresponse[1];
+            }
+            else
+            {
+                msg = "No Response";
+            }
+            return msg;
+        }
+
         private void btnLogin_Click(object sender, EventArgs e)
         {
             string username = txtuser.Text;
@@ -154,21 +168,6 @@ namespace Client
             return msg;
         }
         
-
-        private string interpretRate(String msg)
-        {
-            if (msg != null)
-            {
-                String[] Rateresponse = Regex.Split(msg, ":");
-                msg = Rateresponse[1];
-            }
-            else
-            {
-                msg = "No Response";
-            }
-            return msg;
-        }
-
         private void btnBuy_Click(object sender, EventArgs e)
         {
             if (txtuser.Text == "" || lblusernameResponse.Text != "0k")
