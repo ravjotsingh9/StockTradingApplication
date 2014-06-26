@@ -8,10 +8,9 @@ namespace Server
 {
     public class Users
     {
-
-        
-        
-        //Dictionary<string, int> stockShares stores stock's name and shares
+        /*
+         * Dictionary<string, int> stockShares stores stock's name and shares
+         */ 
         public class userInfo
         {
             public double cashBalance { get; set; }
@@ -31,36 +30,35 @@ namespace Server
 
         private Dictionary<string, userInfo> m_userDictionary;
         public Dictionary<string, userInfo> UserDictionary
-
         {
-            get{
+            get
+            {
                 return m_userDictionary;
             }
-            set{
+            set
+            {
                 m_userDictionary = value;
             }
         }
 
         public Users()
         {
-        
-
             UserDictionary = new Dictionary<string, userInfo>();
         }
 
 
-        
-
-
-        // file's name for users' information stores in the Disk
+        /*
+         * file's name for users' information stores in the Disk
+         */ 
         private string fileusers;
 
-        // get users' information from the disk when server restart
+        /*
+         * get users' information from the disk when server restart
+         */ 
         public bool getUserDataFromFile(String FileName)
         {
             try
             {
-
                 using (StreamReader reader = new StreamReader(FileName))
                 {
                     string line;
@@ -72,18 +70,14 @@ namespace Server
                         userInfo info = new userInfo();
                         info.cashBalance = balance;
                         string line2;
-                        while((line2 = reader.ReadLine()) != "-----"){
-                            string[] stocksList = line2.Split(' ');
-                            
+                        while((line2 = reader.ReadLine()) != "-----")
+                        {
+                            string[] stocksList = line2.Split(' ');    
                             info.StockShares.Add(stocksList[0], Convert.ToInt32(stocksList[1]));
-                          
                         }
-                       
                         this.UserDictionary.Add(key, info);
-                      
                     }
                 }
-
             }
             catch (Exception e)
             {
@@ -94,7 +88,9 @@ namespace Server
             return true;
         }
 
-        // wirte all users information into the disk
+        /*
+         * wirte all users information into the disk
+         */ 
         public bool writeAllUserData(String FileName)
         {
             try
@@ -123,24 +119,21 @@ namespace Server
             return true;
         }
 
-        // append single user's information into the disk
+        /*
+         * append single user's information into the disk
+         */ 
         public bool writeSingleUserData(string FileName, string userName)
         {
             try
             {
                 using (System.IO.StreamWriter file = new System.IO.StreamWriter(@FileName, true))
                 {
-
-
                     file.WriteLine("{0} {1}", userName, this.UserDictionary[userName].cashBalance);
                     foreach (string key2 in this.UserDictionary[userName].StockShares.Keys)
-                        {
-                            file.WriteLine("{0} {1}", key2, this.UserDictionary[userName].StockShares[key2]);
-                        }
-
-                        file.WriteLine("-----");
-    
-
+                    {
+                        file.WriteLine("{0} {1}", key2, this.UserDictionary[userName].StockShares[key2]);
+                    }
+                    file.WriteLine("-----");
                 }
             }
             catch (Exception e)
@@ -152,7 +145,9 @@ namespace Server
         }
 
 
-        // Modify user's cash balance, addORminus: false:decrease balance, true:increase balance
+        /*
+         * Modify user's cash balance, addORminus: false:decrease balance, true:increase balance
+         */ 
         public bool modifyCash(string userName, double amount, bool addORminus)
         {
             if (UserDictionary.ContainsKey(userName))
@@ -173,21 +168,18 @@ namespace Server
                     {
                         return false;
                     }
-  
                 }
-
-                
             }
             else
             {
                 return false;
             }
-
-            
         }
 
 
-        // add user to the UserDictionary
+        /*
+         * add user to the UserDictionary
+         */ 
         public bool addUser(string name)
         {
             if (!UserDictionary.ContainsKey(name))
@@ -197,7 +189,8 @@ namespace Server
                 UserDictionary.Add(name, tempInfo);
                 return true;
             }
-            else{
+            else
+            {
                 return false;
             }
             
@@ -215,7 +208,9 @@ namespace Server
             }
         }
 
-       // add new stock and shares for a user
+       /*
+        * add new stock and shares for a user
+        */ 
         public bool addStcokForUser(string userName, string stocKName, int shares)
         {
             try
@@ -231,19 +226,20 @@ namespace Server
             }
         }
 
-        // Modify user's exist stock's shares, addORminus: false:decrease , true:increase
+        /*
+         * Modify user's exist stock's shares, addORminus: false:decrease , true:increase
+         */ 
         public bool modifyShares(string userName, string stocKName, int shares, bool addORdecrese)
-        {
-            
+        { 
             try
-            {
-                
+            {       
                 if (this.UserDictionary.ContainsKey(userName))
                 {
                     if (addORdecrese)
                     {
                         UserDictionary[userName].StockShares[stocKName] += shares;
-                    }else
+                    }
+                    else
                     {
                         UserDictionary[userName].StockShares[stocKName] -= shares;
                     }
@@ -253,8 +249,6 @@ namespace Server
                 {
                     return false;
                 }
-              
-                
             }
             catch (Exception e)
             {

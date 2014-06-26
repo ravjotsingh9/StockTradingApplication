@@ -13,44 +13,55 @@ namespace Server
         public string stockname;
         public float stockprice;
 
+        
+        /* file's name for stock's information stores in the Disk  */
+        private string fileStock;
+
+
+        /* Class to store data for 1 stock */
         public class stockInfo
         {
             public string price { get; set; }
             public int shares { get; set; }
         }
-        
-        // Stock list and price in memory
-        //Key:stock' name, value: price, shares
+
+
+        /*
+         * Stock list and price in memory
+         * Key:stock name, value: price, shares
+         */
         private Dictionary<string, stockInfo> m_stocksDictionary ;
 
         public Dictionary<string, stockInfo> stocksDictionary
         {
-            get{
+            get
+            {
                 return m_stocksDictionary;
-               }
+            }
             set
             {
                 m_stocksDictionary = value;
             }
         }
 
-        // file's name for stock's information stores in the Disk
-        private string fileStock;
-
-
         
-        // constructor 
+
+        /* Constructor */ 
         public Stock()
         {
             stocksDictionary = new Dictionary<string, stockInfo>();
         }
 
-        ///You can use this function to test the stock value
-        ///stockIdentifier : stock's name
-        ///For example, Apple should input as AAPL
-        ///You can see the right stock name from here:
-        ///https://finance.yahoo.com/q?s=AAPL
-        // string val = getPriceFromYahoo("AAPL");
+
+
+        /*
+         * You can use this function to test the stock value
+         * stockIdentifier : stock's name
+         * For example, Apple should input as AAPL
+         * You can see the right stock name from here:
+         * https://finance.yahoo.com/q?s=AAPL
+         * string val = getPriceFromYahoo("AAPL");
+         */ 
         public string getPriceFromYahoo(string stockIdentifier)
         {
             string price = "";
@@ -62,15 +73,16 @@ namespace Server
                 price = value.LastTradePrice.ToString();
                 return price;
             }
-
             return null;
-
         }
 
-        // update the price for all the stocks in the memoery (next step should store in the file)
+
+        /*
+         * update the price for all the stocks in the memoery 
+         * (next step should store in the file)
+         */ 
         public bool updateAllPrice()
         {
-      
             foreach (string key in this.stocksDictionary.Keys)
             {
                 List<stockQuote> updateQueries = new List<stockQuote>();
@@ -85,14 +97,14 @@ namespace Server
                     return false;
                 }
                 
-            }
-            
+            }   
             return true;
-
         }
 
-       // add stock into the dictionary with initail shares 1000 and up-to-date price from Yahoo.
-       // This function is private. Use writeNewStockData() to both add new stock in memory and file
+        /*
+         * add stock into the dictionary with initail shares 1000 and up-to-date price from Yahoo.
+         * This function is private. Use writeNewStockData() to both add new stock in memory and file
+         */ 
         private bool addToTheStockList(string stockName)
         {
             stockInfo info = new stockInfo();
@@ -106,7 +118,7 @@ namespace Server
             return false;
         }
 
-        // wirte stock's information into the disk
+        /* wirte stock's information into the disk */
         public bool writeAllStockData(String FileName){
             try
             {
@@ -114,7 +126,6 @@ namespace Server
                 {
                     foreach (String key in this.stocksDictionary.Keys)
                     {
-
                         file.WriteLine("{0} {1} {2}", key, this.stocksDictionary[key].price, this.stocksDictionary[key].shares);
                     }
 
@@ -124,12 +135,13 @@ namespace Server
             {
                 return false;
             }
-
             return true;
         }
 
-        // write new data into the file when client first queries the stcok
-        // Need to consider synchronize issue for shared resoures --- "file" and variable"stocksDictionary"
+        /*
+         * write new data into the file when client first queries the stcok
+         * Need to consider synchronize issue for shared resoures --- "file" and variable"stocksDictionary"
+         */ 
         public bool writeNewStockData(String FileName, String stockName)
         {
             try
@@ -141,7 +153,9 @@ namespace Server
                         file.WriteLine("{0} {1} {2}", stockName, stocksDictionary[stockName].price, stocksDictionary[stockName].shares);
 
                     }
-                }else{
+                }
+                else
+                {
                     return false;
                 }
 
@@ -155,14 +169,15 @@ namespace Server
             return true;
         }
 
-        // get stock's information from the disk
-        // only used when server is shut down and restar again
+
+        /*
+         * get stock's information from the disk
+         * only used when server is shut down and restar again
+         */ 
         public bool getStockDataFromFile(String FileName)
-        {
-            
+        {    
             try
-            {
-               
+            {      
                 using (StreamReader reader = new StreamReader(FileName))
                 {
                     string line;
@@ -175,32 +190,30 @@ namespace Server
                         stocksDictionary.Add(words[0], info);
                     }
                 }
-
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
                 return false;
             }
-
             return true;
         }
 
-
-
-
-        //check if stock already in the tracing list(stockDictionary)
-        //Server can call this function to check
+        /*
+         * check if stock already in the tracing list(stockDictionary)
+         * Server can call this function to check
+         */ 
         public bool checkInStockDic(string name)
         {
             return stocksDictionary.ContainsKey(name);
         }
 
-        //check if the user enter the correct stock name
-        //UI can call this function to display error to the user
+        /* 
+         * check if the user enter the correct stock name
+         * UI can call this function to display error to the user
+         */ 
         public bool validStockName(string name)
         {
-
             if (getPriceFromYahoo(name) == null)
             {
                 return false;
@@ -211,7 +224,9 @@ namespace Server
             }
         }
 
-        // decrease shares number in the stocksDictionary (users' stock's share quantity should increase)
+        /* 
+         * decrease shares number in the stocksDictionary (users' stock's share quantity should increase)
+         */ 
         public bool clientBuyShares(string stockName, int quantity)
         {
             if (this.stocksDictionary.ContainsKey(stockName))
@@ -235,23 +250,20 @@ namespace Server
             
         }
 
-        // increase shares number in the stocksDictionary (users' stock's share quantity should decrease)
+        /*
+         * increase shares number in the stocksDictionary (users' stock's share quantity should decrease)
+         */ 
         public bool clientSellShares(string stockName, int quantity)
         {
             if (this.stocksDictionary.ContainsKey(stockName))
-            {
-
-             
+            {  
                     this.stocksDictionary[stockName].shares += quantity;
                     return true;
-
             }
             else
             {
                 return false;
             }
-
         }
-
     }
 }
