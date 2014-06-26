@@ -29,7 +29,49 @@ namespace Server
         private void servicethread(Object socket)
         {
             Socket soc = (Socket)socket;
-
+            string data = readdata(soc);
+            string msgtype = findMsgtype(data);
+            if(msgtype == "USER" || msgtype == "user")
+            {
+                string response ="";
+                if((response= responseMsgUSER(data))!= null)
+                {
+                    writedata(soc, response);
+                }
+            }
+            else
+            {
+                if (msgtype == "QUERY" || msgtype == "query")
+                {
+                    string response = "";
+                    if ((response = responseMsgQUERY(data)) != null)
+                    {
+                        writedata(soc, response);
+                    }
+                }
+                else
+                {
+                    if (msgtype == "BUY" || msgtype == "buy")
+                    {
+                        string response = "";
+                        if ((response = responseMsgBUY(data)) != null)
+                        {
+                            writedata(soc, response);
+                        }
+                    }
+                    else
+                    {
+                        if (msgtype == "SELL" || msgtype == "sell")
+                        {
+                            string response = "";
+                            if ((response = responseMsgSELL(data)) != null)
+                            {
+                                writedata(soc, response);
+                            }
+                        }
+                    }
+                }
+            }
             /*
             string data = null;
             byte[] bytes;
@@ -151,7 +193,7 @@ namespace Server
         }
 
 
-         private string interpretUsername(string msg)
+         private string responseMsgUSER(string msg)
          {
              if (msg != null)
              {
