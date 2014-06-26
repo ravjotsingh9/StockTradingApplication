@@ -193,6 +193,8 @@ namespace Server
         }
 
 
+
+        // return msg format <userName> + ":ok" + ":<EOF>"
          private string responseMsgUSER(string msg)
          {
              if (msg != null)
@@ -219,6 +221,57 @@ namespace Server
                  return null;
              }
          }
+
+
+
+
+
+
+
+         // return msg format "ok:" + <currentBlance> + ":" + <stockName> + ":" + <quantity> ":<EOF>"
+         public string responseMsgBUY(String msg)
+         {
+
+             if (msg != null)
+             {
+                 // process string format "BUY:" + <userName> + ":" + <stockName> + ":" + <quantity> + ":<EOF>" from client;            
+                 string[] split = msg.Split(':');
+                 string userName = split[1];
+                 string nameOfStock = split[2];
+                 int quantity = Convert.ToInt32(split[3]);
+
+
+                 // check if validStockName
+                 // check if in local stockList
+                 // check stock shares is less than 1000 in dictionery
+                 // check if the user has enough money to buy
+                 // etc...
+                 // if sucessfully buy:
+
+                 string responseMsg = "";
+                 string stockMsg = "";
+
+                 string cashBalance = userList.UserDictionary[userName].cashBalance.ToString();
+
+                 foreach (string key in userList.UserDictionary[userName].StockShares.Keys)
+                 {
+                     stockMsg += ":" + key + ":" + userList.UserDictionary[userName].StockShares[key].ToString();
+
+                 }
+
+
+                 responseMsg = "ok:" + cashBalance + stockMsg + ":<EOF>";
+                 return responseMsg;
+             }
+             else
+             {
+                 return "Cannot process, check again." + ":<EOF>";
+             }
+
+         }
+
+        
+
 
 
         /*
