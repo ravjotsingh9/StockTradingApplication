@@ -109,7 +109,7 @@ namespace Server
                     {
                         //write datas into files before stop the server
                         Stocklist.writeAllStockData(fileNameForStock);
-                        userList.writeAllUserData(fileNameForStock);
+                        userList.writeAllUserData(fileNameForUser);
                         if (DialogResult.Yes == MessageBox.Show("Do you really want to shut down server? ", "Allow", MessageBoxButtons.YesNo))
                         {
                             soc.Shutdown(SocketShutdown.Both);
