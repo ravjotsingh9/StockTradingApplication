@@ -9,11 +9,13 @@ namespace Server
 {
     class ClientServiceThread
     {
-        List<Stock> Stocklist;
+        Stock Stocklist;
         Users userList;
+        
+
         public ClientServiceThread()
         {
-            Stocklist = new List<Stock>();
+            Stocklist = new Stock();
             userList = new Users();
         }
 
@@ -21,6 +23,18 @@ namespace Server
         public void startServicingClient(Socket soc)
         {
             ThreadPool.QueueUserWorkItem(servicethread, (Object)soc);
+        }
+
+        /*
+         * Stock watchdog thread start function
+         */ 
+        public void stockwatchdog()
+        {
+            while(true)
+            {
+                Stocklist.updateAllPrice();
+                Thread.Sleep(120000);
+            }
         }
 
         /*

@@ -15,13 +15,18 @@ namespace Server
         volatile bool stop;
         Thread thread;
         ClientServiceThread serviceClient;
+        Thread watchdog;
 
         public ServerMainThread()
         {
             thread = new Thread(new ThreadStart(serverthread));
+            watchdog = new Thread(new ThreadStart(stockwatchdog));
             serviceClient = new ClientServiceThread();
             stop = false;
         }
+
+
+
         /*
          * Start the server thread
          */ 
