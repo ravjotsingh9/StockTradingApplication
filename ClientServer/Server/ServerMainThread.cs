@@ -74,6 +74,11 @@ namespace Server
                 }
                 snder.Shutdown(SocketShutdown.Both);
                 snder.Close();
+                // Abort watchdog thread also
+                if (watchdog.IsAlive == true)
+                {
+                    watchdog.Abort();
+                }
             }
             else
             {
