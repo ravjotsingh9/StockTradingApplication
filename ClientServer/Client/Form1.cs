@@ -14,9 +14,12 @@ namespace Client
 {
     public partial class Form1 : Form
     {
+        string userName;
         public Form1()
         {
+            userName = "";
             InitializeComponent();
+            grptrading.Enabled = false;
         }
 
         private void btnQuery_Click(object sender, EventArgs e)
@@ -124,11 +127,16 @@ namespace Client
                 try
                 {
                     snder.Connect(remoteEP);
-                    byte[] msg = Encoding.ASCII.GetBytes("USER:"+txtStockname.Text + ":<EOF>");
+                    byte[] msg = Encoding.ASCII.GetBytes("USER:"+txtuser.Text + ":<EOF>");
                     int bytesSent = snder.Send(msg);
                     int bytesRec = snder.Receive(bytes);
                     string loginresp = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                    lblusernameResponse.Text=interpretUsername(loginresp);
+                    if (interpretUsername(loginresp)=="ok")
+                    {
+                        userName = txtuser.Text;
+                        grptrading.Enabled = true;
+                        lblusernameResponse.Text = "Login";
+                    }
                     snder.Shutdown(SocketShutdown.Both);
                     snder.Close();
 
@@ -159,7 +167,7 @@ namespace Client
             if(msg!=null)
             {
                 String[] Userresponse = Regex.Split(msg, ":");
-                msg = Userresponse[1] ;
+                msg = Userresponse[0] ;
             }
             else
             {

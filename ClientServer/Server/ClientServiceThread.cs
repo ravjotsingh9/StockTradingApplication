@@ -202,7 +202,7 @@ namespace Server
             if (msg != null)
             {
                 string[] split = msg.Split(':');
-                string messagetype = split[1];
+                string messagetype = split[0];
                 return messagetype;
             }
             else
@@ -225,7 +225,7 @@ namespace Server
  
                  if (userList.ifUserExist(userName))
                  {
-                     responseMsg = userName + ":ok" + ":<EOF>";
+                     responseMsg = "ok:" + userName  + ":<EOF>";
                      return responseMsg;
                  }
                  else
@@ -236,7 +236,8 @@ namespace Server
                          userList.writeAllUserData(fileNameForUser);
                      }
                      
-                     responseMsg = userName + " was added into users list" + ":<EOF>";
+                     //responseMsg = userName + " was added into users list" + ":<EOF>";
+                     responseMsg = "ok:" + userName + ":<EOF>";
                      return responseMsg;
                  }
              }

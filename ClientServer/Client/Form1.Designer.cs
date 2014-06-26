@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.grptrading = new System.Windows.Forms.GroupBox();
             this.btnSell = new System.Windows.Forms.Button();
             this.label5 = new System.Windows.Forms.Label();
             this.txtQnty = new System.Windows.Forms.TextBox();
@@ -42,26 +42,26 @@
             this.label3 = new System.Windows.Forms.Label();
             this.txtuser = new System.Windows.Forms.TextBox();
             this.btnLogin = new System.Windows.Forms.Button();
-            this.groupBox1.SuspendLayout();
+            this.grptrading.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
             // 
-            // groupBox1
+            // grptrading
             // 
-            this.groupBox1.Controls.Add(this.btnSell);
-            this.groupBox1.Controls.Add(this.label5);
-            this.groupBox1.Controls.Add(this.txtQnty);
-            this.groupBox1.Controls.Add(this.btnBuy);
-            this.groupBox1.Controls.Add(this.lblrate);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.txtStockname);
-            this.groupBox1.Controls.Add(this.Query);
-            this.groupBox1.Location = new System.Drawing.Point(28, 106);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(447, 145);
-            this.groupBox1.TabIndex = 5;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Stock Trading";
+            this.grptrading.Controls.Add(this.btnSell);
+            this.grptrading.Controls.Add(this.label5);
+            this.grptrading.Controls.Add(this.txtQnty);
+            this.grptrading.Controls.Add(this.btnBuy);
+            this.grptrading.Controls.Add(this.lblrate);
+            this.grptrading.Controls.Add(this.label1);
+            this.grptrading.Controls.Add(this.txtStockname);
+            this.grptrading.Controls.Add(this.Query);
+            this.grptrading.Location = new System.Drawing.Point(28, 106);
+            this.grptrading.Name = "grptrading";
+            this.grptrading.Size = new System.Drawing.Size(447, 145);
+            this.grptrading.TabIndex = 5;
+            this.grptrading.TabStop = false;
+            this.grptrading.Text = "Stock Trading";
             // 
             // btnSell
             // 
@@ -189,12 +189,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(497, 278);
             this.Controls.Add(this.groupBox2);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.grptrading);
             this.MaximizeBox = false;
             this.Name = "Form1";
             this.Text = "Form1";
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.grptrading.ResumeLayout(false);
+            this.grptrading.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.ResumeLayout(false);
@@ -203,7 +203,7 @@
 
         #endregion
 
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox grptrading;
         private System.Windows.Forms.Button btnSell;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.TextBox txtQnty;
