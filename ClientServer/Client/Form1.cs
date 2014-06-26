@@ -218,7 +218,7 @@ namespace Client
                             try
                             {
                                 snder.Connect(remoteEP);
-                                byte[] msg = Encoding.ASCII.GetBytes("BUY:" + txtuser + ":" + txtStockname.Text + ":" + txtQnty.Text + ":<EOF>");
+                                byte[] msg = Encoding.ASCII.GetBytes("BUY:" + txtuser.Text + ":" + txtStockname.Text + ":" + txtQnty.Text + ":<EOF>");
                                 int bytesSent = snder.Send(msg);
                                 int bytesRec = snder.Receive(bytes);
                                 string Buyresponse = Encoding.ASCII.GetString(bytes, 0, bytesRec);
@@ -245,6 +245,10 @@ namespace Client
                         {
                             MessageBox.Show(exx.ToString());
                         }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Quantity should be integers and nothing else");
                     }
                 }
             }
@@ -283,7 +287,7 @@ namespace Client
 
         private void btnSell_Click(object sender, EventArgs e)
         {
-            if (txtuser.Text == "" || lblusernameResponse.Text != "0k")
+            if (txtuser.Text == "")
             {
                 MessageBox.Show("User Name cannot be empty.", "Please provide your user name and login first");
                 return;
@@ -323,7 +327,7 @@ namespace Client
                             try
                             {
                                 snder.Connect(remoteEP);
-                                byte[] msg = Encoding.ASCII.GetBytes("SELL:" + txtuser + ":" + txtStockname.Text + ":" + txtQnty.Text + ":<EOF>");
+                                byte[] msg = Encoding.ASCII.GetBytes("SELL:" + txtuser.Text + ":" + txtStockname.Text + ":" + txtQnty.Text + ":<EOF>");
                                 int bytesSent = snder.Send(msg);
                                 int bytesRec = snder.Receive(bytes);
                                 string Sellresponse = Encoding.ASCII.GetString(bytes, 0, bytesRec);

@@ -102,7 +102,7 @@
             // lblrate
             // 
             this.lblrate.AutoSize = true;
-            this.lblrate.Location = new System.Drawing.Point(201, 36);
+            this.lblrate.Location = new System.Drawing.Point(313, 35);
             this.lblrate.Name = "lblrate";
             this.lblrate.Size = new System.Drawing.Size(128, 13);
             this.lblrate.TabIndex = 8;
@@ -126,7 +126,7 @@
             // 
             // Query
             // 
-            this.Query.Location = new System.Drawing.Point(335, 31);
+            this.Query.Location = new System.Drawing.Point(215, 30);
             this.Query.Name = "Query";
             this.Query.Size = new System.Drawing.Size(75, 23);
             this.Query.TabIndex = 5;
