@@ -35,7 +35,11 @@ namespace Server
         {
             while(true)
             {
-                Stocklist.updateAllPrice();
+                lock (stocksLock)
+                {
+                    Stocklist.updateAllPrice();
+                }
+                
                 Thread.Sleep(120000);
             }
         }
