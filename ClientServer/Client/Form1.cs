@@ -24,9 +24,9 @@ namespace Client
 
         private void btnQuery_Click(object sender, EventArgs e)
         {
-            if(txtuser.Text== "" || lblusernameResponse.Text!= "0k")
+            if(userName== "" )
             {
-                MessageBox.Show("User name cannot be empty.","Please provide them and Login first");
+                MessageBox.Show("No user name selected.","Please Login first");
                 return;
             }
             else
@@ -178,9 +178,9 @@ namespace Client
         
         private void btnBuy_Click(object sender, EventArgs e)
         {
-            if (txtuser.Text == "" || lblusernameResponse.Text != "0k")
+            if (userName == "")
             {
-                MessageBox.Show("User Name cannot be empty.", "Please provide your user name and login first");
+                MessageBox.Show("No user name selected.", "Please Login first");
                 return;
             }
             else
