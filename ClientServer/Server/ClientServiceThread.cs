@@ -13,6 +13,7 @@ namespace Server
         string fileNameForUser = "users.txt ";
         private Object stocksLock = new Object();
         private Object usersLock = new Object();
+        private Object buySellLock = new Object();
         //Stock Stocklist;
         //Users userList;
         //public ClientServiceThread()
@@ -330,52 +331,60 @@ namespace Server
                  // check if validStockName
                  if (Stocklist.validStockName(nameOfStock))
                  {
-                     lock (stocksLock)
+                     lock (buySellLock)
                      {
-                         // check if in local stockList
-                         if (!Stocklist.checkInStockDic(nameOfStock))
+                         lock (stocksLock)
                          {
-                             Stocklist.addToTheStockList(nameOfStock);
-                         }
+                             // check if in local stockList
+                             if (!Stocklist.checkInStockDic(nameOfStock))
+                             {
+                                 Stocklist.addToTheStockList(nameOfStock);
+                             }
 
                    
-                       success =  Stocklist.clientBuyShares(nameOfStock, quantity);
-                       price = quantity * Convert.ToDouble(Stocklist.stocksDictionary[nameOfStock].price);
+                           success =  Stocklist.clientBuyShares(nameOfStock, quantity);
+                           price = quantity * Convert.ToDouble(Stocklist.stocksDictionary[nameOfStock].price);
 
-                     }
-
-                     if (success)
-                     {
-                         lock (usersLock)
-                         {
-                             if (userList.modifyCash(userName, price, false))
-                             {
-                                 if (userList.modifyShares(userName, nameOfStock, quantity, true)) ;
-
-                                 string cashBalance = userList.UserDictionary[userName].cashBalance.ToString();
-
-                                 foreach (string key in userList.UserDictionary[userName].StockShares.Keys)
-                                 {
-                                     stockMsg += ":" + key + ":" + userList.UserDictionary[userName].StockShares[key].ToString();
-
-                                 }
-                                 
-                                 responseMsg = "ok:" + cashBalance + stockMsg + ":<EOF>";
-                             }
-                             else
-                             {
-                                 responseMsg = "Your cash is not enough to buy" + ":<EOF>";
-                             }
-                           
                          }
-                                                
-                         return responseMsg;
+
+                         if (success)
+                         {
+                             lock (usersLock)
+                             {
+                                 if (userList.modifyCash(userName, price, false))
+                                 {
+                                     if (userList.modifyShares(userName, nameOfStock, quantity, true)) ;
+
+                                     string cashBalance = userList.UserDictionary[userName].cashBalance.ToString();
+
+                                     foreach (string key in userList.UserDictionary[userName].StockShares.Keys)
+                                     {
+                                         stockMsg += ":" + key + ":" + userList.UserDictionary[userName].StockShares[key].ToString();
+
+                                     }
+                                 
+                                     responseMsg = "ok:" + cashBalance + stockMsg + ":<EOF>";
+                                     return responseMsg;
+                                 }
+                              }
+
+                             lock (stocksLock)
+                             {
+                                 Stocklist.clientSellShares(nameOfStock, quantity); 
+                             }
+                         
+                             responseMsg = "Your cash is not enough to buy" + ":<EOF>";
+                             return responseMsg;    
+                         
+                         
+                         }
+                         else
+                         {
+                             responseMsg = "Stock's shares are not enough to buy" + ":<EOF>";
+                             return responseMsg;
+                         }
                      }
-                     else
-                     {
-                         responseMsg = "Stock's shares are not enough to buy" + ":<EOF>";
-                         return responseMsg;
-                     }
+ 
 
                  }
                  else
@@ -407,34 +416,51 @@ namespace Server
                  string userName = split[1];
                  string nameOfStock = split[2];
                  int quantity = Convert.ToInt32(split[3]);
-
+                 bool modifiable;
                  string stockMsg = "";
                  string responseMsg = "";
+                 double price;
 
                  // check if stock name is valid
                  // check if user has that particular stock
                  if (Stocklist.validStockName(nameOfStock) &&
                      userList.UserDictionary[userName].StockShares.ContainsKey(nameOfStock))
                  {
-                     lock(usersLock)
+                     lock(buySellLock)
                      {
-                         if (userList.modifyShares(userName, nameOfStock, quantity, false))
-                         {
+                        lock(usersLock)
+                        {
+                            modifiable = userList.modifyShares(userName, nameOfStock, quantity, false);
+                        }
+                        
+                         if (modifiable)
+                        {
+                            
+                            lock (stocksLock)
+                            {
+                                price = quantity * Convert.ToDouble(Stocklist.stocksDictionary[nameOfStock].price);
+                                Stocklist.clientSellShares(nameOfStock, quantity);
+                            }
+                                
+                            lock(usersLock)
+                            {
+                                userList.modifyCash(userName, price, true);
+                                string cashBalance = userList.UserDictionary[userName].cashBalance.ToString();
 
-                             double price = quantity * Convert.ToDouble(Stocklist.stocksDictionary[nameOfStock].price);
-                             userList.modifyCash(userName, price, true);
-                             string cashBalance = userList.UserDictionary[userName].cashBalance.ToString();
+                                // generate stockname and stock quantity the user has 
+                                foreach (string key in userList.UserDictionary[userName].StockShares.Keys)
+                                {
+                                    stockMsg += ":" + key + ":" + userList.UserDictionary[userName].StockShares[key].ToString();
 
-                             // generate stockname and stock quantity the user has 
-                             foreach (string key in userList.UserDictionary[userName].StockShares.Keys)
-                             {
-                                 stockMsg += ":" + key + ":" + userList.UserDictionary[userName].StockShares[key].ToString();
-
-                             }
-                             responseMsg = "ok:" + cashBalance + stockMsg + ":<EOF>";
-                          
-                         }
+                                }
+                                responseMsg = "ok:" + cashBalance + stockMsg + ":<EOF>";
+                            }   
+                            return responseMsg;
+                        }
+      
                      }
+
+                     responseMsg = "Your shares number are not enough" + ":<EOF>";
                      return responseMsg;
                }
                      // check if the user has enough shares to sell
