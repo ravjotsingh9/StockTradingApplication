@@ -9,6 +9,10 @@ namespace Server
 {
     class ClientServiceThread
     {
+        // this stockList already contains a dictionery
+        // Note it's small s
+        Stock stockList = new Stock();
+
         List<Stock> Stocklist;
         Users userList;
         public ClientServiceThread()
@@ -225,6 +229,48 @@ namespace Server
 
 
 
+         // return msg format <userName> + ":" + <price> + ":<EOF>"
+         public string responseMsgQUERY(String msg)
+         {
+
+             if (msg != null)
+             {
+
+                 string responseMsg = "";
+
+                 // process string format "QUERY:" + <userName> + ":" + <nameOfStock> + ":<EOF>" from client;            
+                 string[] split = msg.Split(':');
+                 string userName = split[1];
+                 string nameOfStock = split[2];
+
+
+                 // stockList needs to get replaced
+                 if (stockList.validStockName(nameOfStock))
+                 {
+
+                     // price is already a string
+                     responseMsg = userName + ":" + stockList.getPriceFromYahoo(nameOfStock) + ":<EOF>";
+                     return responseMsg;
+                 }
+                 else
+                 {
+
+                     // price is already a string
+                     responseMsg = userName + ":" + "Invalid stock name! Please check stock name." + ":<EOF>";
+                     return responseMsg;
+                 }
+
+             }
+             else
+             {
+                 return null;
+             }
+
+         }
+
+
+
+
 
 
 
@@ -270,7 +316,52 @@ namespace Server
 
          }
 
-        
+
+
+
+
+         // return msg format "ok:" + <currentBlance> + ":" + <stockName> + ":" + <quantity> ":<EOF>"
+         public string responseMsgSELL(String msg)
+         {
+
+             if (msg != null)
+             {
+                 // process string format "SELL:" + <userName> + ":" + <stockName> + ":" + <quantity> + ":<EOF>" from client;            
+                 string[] split = msg.Split(':');
+                 string userName = split[1];
+                 string nameOfStock = split[2];
+                 int quantity = Convert.ToInt32(split[3]);
+
+                 // check if stock name is valid
+                 // check if user has that perticular stock
+                 // check if the user has enough shares to sell
+                 // etc
+                 // if successfully sold:
+
+                 string stockMsg = "";
+                 string responseMsg = "";
+
+                 string cashBalance = userList.UserDictionary[userName].cashBalance.ToString();
+
+                 // generate stockname and stock quantity the user has 
+                 foreach (string key in userList.UserDictionary[userName].StockShares.Keys)
+                 {
+                     stockMsg += ":" + key + ":" + userList.UserDictionary[userName].StockShares[key].ToString();
+
+                 }
+                 responseMsg = "ok:" + cashBalance + stockMsg + ":<EOF>";
+                 return responseMsg;
+
+             }
+
+             else
+             {
+                 return null;
+             }
+
+         }
+
+
 
 
 
