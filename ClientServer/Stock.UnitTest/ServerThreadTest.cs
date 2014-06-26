@@ -46,7 +46,7 @@ namespace UnitTest
         {
 
             Form1 yyy = new Form1();
-            yyy.
+          
             
         }
     }
