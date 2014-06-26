@@ -53,7 +53,7 @@ namespace Client
                         try
                         {
                             snder.Connect(remoteEP);
-                            byte[] msg = Encoding.ASCII.GetBytes("QUERY:"+txtuser.Text + ":" + txtStockname.Text + "<EOF>");
+                            byte[] msg = Encoding.ASCII.GetBytes("QUERY:"+txtuser.Text + ":" + txtStockname.Text + ":<EOF>");
                             int bytesSent = snder.Send(msg);
                             int bytesRec = snder.Receive(bytes);
                             String Ratereponse = Encoding.ASCII.GetString(bytes, 0, bytesRec);
@@ -88,7 +88,7 @@ namespace Client
             if (msg != null)
             {
                 String[] Rateresponse = Regex.Split(msg, ":");
-                msg = Rateresponse[1];
+                    msg = Rateresponse[1];
             }
             else
             {
@@ -124,7 +124,7 @@ namespace Client
                 try
                 {
                     snder.Connect(remoteEP);
-                    byte[] msg = Encoding.ASCII.GetBytes("USER:"+txtStockname.Text + "<EOF>");
+                    byte[] msg = Encoding.ASCII.GetBytes("USER:"+txtStockname.Text + ":<EOF>");
                     int bytesSent = snder.Send(msg);
                     int bytesRec = snder.Receive(bytes);
                     string loginresp = Encoding.ASCII.GetString(bytes, 0, bytesRec);
@@ -159,7 +159,7 @@ namespace Client
             if(msg!=null)
             {
                 String[] Userresponse = Regex.Split(msg, ":");
-                msg = Userresponse[1];
+                msg = Userresponse[1] ;
             }
             else
             {
@@ -210,7 +210,7 @@ namespace Client
                             try
                             {
                                 snder.Connect(remoteEP);
-                                byte[] msg = Encoding.ASCII.GetBytes("BUY:" + txtuser + ":" + txtStockname.Text + ":" + txtQnty.Text + "<EOF>");
+                                byte[] msg = Encoding.ASCII.GetBytes("BUY:" + txtuser + ":" + txtStockname.Text + ":" + txtQnty.Text + ":<EOF>");
                                 int bytesSent = snder.Send(msg);
                                 int bytesRec = snder.Receive(bytes);
                                 string Buyresponse = Encoding.ASCII.GetString(bytes, 0, bytesRec);
@@ -248,11 +248,14 @@ namespace Client
             if(msg!=null)
             {
                 string[] response = Regex.Split(msg, ":");
-                if (response[0] == "ok")
+                if (response[0].ToLower() == "ok")
                 {
                     for (int i = 1; i < response.Length; i++)
                     {
-                        BuyInfo = BuyInfo +" "+ response[i];
+                        if (response[i] != "<EOF>")
+                        {
+                            BuyInfo = BuyInfo + " " + response[i];
+                        }
                     }
                 }
                 else
@@ -260,7 +263,10 @@ namespace Client
                     BuyInfo = "Your request cannot be processed because: ";
                     for (int i = 1; i < response.Length; i++)
                     {
-                        BuyInfo = BuyInfo + " " + response[i];
+                        if (response[i] != "<EOF>")
+                        {
+                            BuyInfo = BuyInfo + " " + response[i];
+                        }
                     }
                 }
             }
@@ -309,7 +315,7 @@ namespace Client
                             try
                             {
                                 snder.Connect(remoteEP);
-                                byte[] msg = Encoding.ASCII.GetBytes("SELL:" + txtuser + ":" + txtStockname.Text + ":" + txtQnty.Text + "<EOF>");
+                                byte[] msg = Encoding.ASCII.GetBytes("SELL:" + txtuser + ":" + txtStockname.Text + ":" + txtQnty.Text + ":<EOF>");
                                 int bytesSent = snder.Send(msg);
                                 int bytesRec = snder.Receive(bytes);
                                 string Sellresponse = Encoding.ASCII.GetString(bytes, 0, bytesRec);
@@ -351,11 +357,14 @@ namespace Client
             if(msg!=null)
             {
                 string[] response = Regex.Split(msg, ":");
-                if (response[0] == "ok")
+                if (response[0].ToLower() == "ok")
                 {
                     for (int i = 1; i < response.Length; i++)
                     {
-                        SellInfo = SellInfo + " " + response[i];
+                        if (response[i] != "<EOF>")
+                        {
+                            SellInfo = SellInfo + " " + response[i];
+                        }
                     }
                 }
                 else
@@ -363,7 +372,10 @@ namespace Client
                     SellInfo = "Your request cannot be processed because: ";
                     for (int i = 1; i < response.Length; i++)
                     {
-                        SellInfo = SellInfo + " " + response[i];
+                        if (response[i] != "<EOF>")
+                        {
+                            SellInfo = SellInfo + " " + response[i];
+                        }
                     }
                 }
             }

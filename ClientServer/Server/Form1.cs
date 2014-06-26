@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -17,7 +17,7 @@ namespace Server
     public partial class Form1 : Form
     {
         ServerMainThread serverthread;
-
+        
         public Form1()
         {
             serverthread = new ServerMainThread();
@@ -31,14 +31,14 @@ namespace Server
             button1.Enabled = false;
             //button2.Enabled = true;
             serverthread.startMainThread();
-        }
+                }
 
         private void button2_Click(object sender, EventArgs e)
         {
             serverthread.stopMainThread();
-            //button2.Enabled = false;
-            button1.Enabled = true;
-        }
+                //button2.Enabled = false;
+                button1.Enabled = true;
+            }  
         
     }
 
