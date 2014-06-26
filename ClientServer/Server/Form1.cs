@@ -273,6 +273,40 @@ namespace Server
                 Application.Exit();
             }
         }
+
+
+
+        public string interpretUsername(String msg)
+        {
+            if (msg != null)
+            {
+                string responseMsg = "";
+                // process string format "USER:" + <userName> + ":<EOF>" from client
+                string[] split = msg.Split(':');
+                string userName = split[1];
+
+ 
+                // userList is the Users ojbect, should be placed
+                Users userList = new Users();
+                if (userList.UserDictionary.ContainsKey(userName))
+                {
+
+                    responseMsg = userName + ":ok" + ":<EOF>";
+                    return responseMsg;
+                }
+                else
+                {
+                    responseMsg = userName + "User doesn't exist!" + ":<EOF>";
+                    return responseMsg;
+                }
+            }
+            else
+            {
+                Console.WriteLine("No user name received.");
+                return null;
+            }
+
+        }
         
     }
 
