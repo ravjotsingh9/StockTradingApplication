@@ -26,6 +26,7 @@ namespace Server
         /*
          * Stock watchdog thread start function
          */ 
+        /*
         public void stockwatchdog()
         {
             while(true)
@@ -34,6 +35,8 @@ namespace Server
                 Thread.Sleep(120000);
             }
         }
+        */
+
 
         /*
          * Thread start-function to service single request from client
@@ -175,7 +178,7 @@ namespace Server
         private bool writedata(Socket soc, string data)
         {
             byte[] msg;
-            if ((msg = Encoding.ASCII.GetBytes(setstockvalue(data))) != null)
+            if ((msg = Encoding.ASCII.GetBytes(data)) != null)
             {
                 soc.Send(msg);
                 return true;
@@ -238,7 +241,7 @@ namespace Server
 
 
          // return msg format <userName> + ":" + <price> + ":<EOF>"
-         public string responseMsgQUERY(String msg)
+         private string responseMsgQUERY(String msg)
          {
 
              if (msg != null)
@@ -253,11 +256,11 @@ namespace Server
 
 
                  // stockList needs to get replaced
-                 if (stockList.validStockName(nameOfStock))
+                 if (Stocklist.validStockName(nameOfStock))
                  {
 
                      // price is already a string
-                     responseMsg = userName + ":" + stockList.getPriceFromYahoo(nameOfStock) + ":<EOF>";
+                     responseMsg = userName + ":" + Stocklist.getPriceFromYahoo(nameOfStock) + ":<EOF>";
                      return responseMsg;
                  }
                  else
@@ -371,11 +374,11 @@ namespace Server
 
 
 
+/*
 
-
-        /*
-         * Get value of stocks [For Assignment Part 2]
-         */ 
+        
+         // Get value of stocks [For Assignment Part 2]
+          
         private string getstockvalue(string data)
         {
             int i = 0;
@@ -391,9 +394,9 @@ namespace Server
         }
 
 
-        /*
-         * Set value of stocks [For Assignment Part 2]
-         */ 
+        
+         //Set value of stocks [For Assignment Part 2]
+          
         private string setstockvalue(string data)
         {
             string[] splt = data.Split(':');
@@ -416,6 +419,6 @@ namespace Server
             return "Added-New";
 
         }
-
+   */
     }
 }
