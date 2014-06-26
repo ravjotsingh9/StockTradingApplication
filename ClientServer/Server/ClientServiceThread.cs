@@ -7,15 +7,19 @@ using System.Threading;
 
 namespace Server
 {
-    class ClientServiceThread
+    public partial class ServerMainThread
     {
-        Stock Stocklist;
-        Users userList;
-        public ClientServiceThread()
-        {
-            Stocklist = new Stock();
-            userList = new Users();
-        }
+        string fileNameForStock = "stocks.txt";
+        string fileNameForUser = "users.txt ";
+        private Object stocksLock = new Object();
+        private Object usersLock = new Object();
+        //Stock Stocklist;
+        //Users userList;
+        //public ClientServiceThread()
+        //{
+        //    Stocklist = new Stock();
+        //    userList = new Users();
+        //}
 
 
         public void startServicingClient(Socket soc)
@@ -25,8 +29,8 @@ namespace Server
 
         /*
          * Stock watchdog thread start function
-         */ 
-        /*
+         */
+        
         public void stockwatchdog()
         {
             while(true)
@@ -35,7 +39,7 @@ namespace Server
                 Thread.Sleep(120000);
             }
         }
-        */
+        
 
 
         /*
@@ -210,7 +214,7 @@ namespace Server
 
 
         // return msg format <userName> + ":ok" + ":<EOF>"
-         private string responseMsgUSER(string msg)
+         public string responseMsgUSER(string msg)
          {
              if (msg != null)
              {
@@ -219,14 +223,20 @@ namespace Server
                  string[] split = msg.Split(':');
                  string userName = split[1];
  
-                 if (userList.UserDictionary.ContainsKey(userName))
+                 if (userList.ifUserExist(userName))
                  {
                      responseMsg = userName + ":ok" + ":<EOF>";
                      return responseMsg;
                  }
                  else
                  {
-                     responseMsg = userName + "User doesn't exist!" + ":<EOF>";
+                     lock (usersLock)
+                     {
+                         userList.addUser(userName);
+                         userList.writeAllUserData(fileNameForUser);
+                     }
+                     
+                     responseMsg = userName + " was added into users list" + ":<EOF>";
                      return responseMsg;
                  }
              }
@@ -241,7 +251,7 @@ namespace Server
 
 
          // return msg format <userName> + ":" + <price> + ":<EOF>"
-         private string responseMsgQUERY(String msg)
+         public string responseMsgQUERY(String msg)
          {
 
              if (msg != null)
@@ -253,14 +263,26 @@ namespace Server
                  string[] split = msg.Split(':');
                  string userName = split[1];
                  string nameOfStock = split[2];
-
+                 string price;
 
                  // stockList needs to get replaced
                  if (Stocklist.validStockName(nameOfStock))
                  {
 
+                     lock (stocksLock)
+                     {
+                         // If the stock is not in the tracing list
+                         if (!Stocklist.checkInStockDic(nameOfStock))
+                         {
+                             Stocklist.addToTheStockList(nameOfStock);
+                             Stocklist.writeAllStockData(fileNameForStock);
+                             
+                         }
+                         price = Stocklist.stocksDictionary[nameOfStock].price;
+                     }    
+                     
                      // price is already a string
-                     responseMsg = userName + ":" + Stocklist.getPriceFromYahoo(nameOfStock) + ":<EOF>";
+                     responseMsg = userName + ":" + price + ":<EOF>";
                      return responseMsg;
                  }
                  else
@@ -296,29 +318,67 @@ namespace Server
                  string userName = split[1];
                  string nameOfStock = split[2];
                  int quantity = Convert.ToInt32(split[3]);
-
-
-                 // check if validStockName
-                 // check if in local stockList
-                 // check stock shares is less than 1000 in dictionery
-                 // check if the user has enough money to buy
-                 // etc...
-                 // if sucessfully buy:
-
                  string responseMsg = "";
                  string stockMsg = "";
-
-                 string cashBalance = userList.UserDictionary[userName].cashBalance.ToString();
-
-                 foreach (string key in userList.UserDictionary[userName].StockShares.Keys)
+                 bool success = false;
+                 double price=0;
+                 // check if validStockName
+                 if (Stocklist.validStockName(nameOfStock))
                  {
-                     stockMsg += ":" + key + ":" + userList.UserDictionary[userName].StockShares[key].ToString();
+                     lock (stocksLock)
+                     {
+                         // check if in local stockList
+                         if (!Stocklist.checkInStockDic(nameOfStock))
+                         {
+                             Stocklist.addToTheStockList(nameOfStock);
+                         }
+
+                   
+                       success =  Stocklist.clientBuyShares(nameOfStock, quantity);
+                       price = quantity * Convert.ToDouble(Stocklist.stocksDictionary[nameOfStock].price);
+
+                     }
+
+                     if (success)
+                     {
+                         lock (usersLock)
+                         {
+                             if (userList.modifyCash(userName, price, false))
+                             {
+                                 if (userList.modifyShares(userName, nameOfStock, quantity, true)) ;
+
+                                 string cashBalance = userList.UserDictionary[userName].cashBalance.ToString();
+
+                                 foreach (string key in userList.UserDictionary[userName].StockShares.Keys)
+                                 {
+                                     stockMsg += ":" + key + ":" + userList.UserDictionary[userName].StockShares[key].ToString();
+
+                                 }
+                                 
+                                 responseMsg = "ok:" + cashBalance + stockMsg + ":<EOF>";
+                             }
+                             else
+                             {
+                                 responseMsg = "Your cash is not enough to buy" + ":<EOF>";
+                             }
+                           
+                         }
+                                                
+                         return responseMsg;
+                     }
+                     else
+                     {
+                         responseMsg = "Stock's shares are not enough to buy" + ":<EOF>";
+                         return responseMsg;
+                     }
 
                  }
+                 else
+                 {
+                     responseMsg = "Invalid stock name! Please check stock name." + ":<EOF>";
+                     return responseMsg;
+                 }
 
-
-                 responseMsg = "ok:" + cashBalance + stockMsg + ":<EOF>";
-                 return responseMsg;
              }
              else
              {
@@ -343,25 +403,45 @@ namespace Server
                  string nameOfStock = split[2];
                  int quantity = Convert.ToInt32(split[3]);
 
-                 // check if stock name is valid
-                 // check if user has that perticular stock
-                 // check if the user has enough shares to sell
-                 // etc
-                 // if successfully sold:
-
                  string stockMsg = "";
                  string responseMsg = "";
 
-                 string cashBalance = userList.UserDictionary[userName].cashBalance.ToString();
-
-                 // generate stockname and stock quantity the user has 
-                 foreach (string key in userList.UserDictionary[userName].StockShares.Keys)
+                 // check if stock name is valid
+                 // check if user has that particular stock
+                 if (Stocklist.validStockName(nameOfStock) &&
+                     userList.UserDictionary[userName].StockShares.ContainsKey(nameOfStock))
                  {
-                     stockMsg += ":" + key + ":" + userList.UserDictionary[userName].StockShares[key].ToString();
+                     lock(usersLock)
+                     {
+                         if (userList.modifyShares(userName, nameOfStock, quantity, false))
+                         {
 
+                             double price = quantity * Convert.ToDouble(Stocklist.stocksDictionary[nameOfStock].price);
+                             userList.modifyCash(userName, price, true);
+                             string cashBalance = userList.UserDictionary[userName].cashBalance.ToString();
+
+                             // generate stockname and stock quantity the user has 
+                             foreach (string key in userList.UserDictionary[userName].StockShares.Keys)
+                             {
+                                 stockMsg += ":" + key + ":" + userList.UserDictionary[userName].StockShares[key].ToString();
+
+                             }
+                             responseMsg = "ok:" + cashBalance + stockMsg + ":<EOF>";
+                          
+                         }
+                     }
+                     return responseMsg;
+               }
+                     // check if the user has enough shares to sell
+
+                 else
+                 { 
+                     responseMsg = "Invalid stock name! Please check stock name." + ":<EOF>";
+                     return responseMsg;
+                 
                  }
-                 responseMsg = "ok:" + cashBalance + stockMsg + ":<EOF>";
-                 return responseMsg;
+                 
+
 
              }
 

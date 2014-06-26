@@ -82,7 +82,7 @@ namespace UnitTest
             test.addUser("third");
             test.addStcokForUser("third","AAPL",400);
             test.addStcokForUser("third", "FB", 700);
-            test.writeSingleUserData("ttt.txt", "third");
+            //test.writeSingleUserData("ttt.txt", "third");
 
         }
         

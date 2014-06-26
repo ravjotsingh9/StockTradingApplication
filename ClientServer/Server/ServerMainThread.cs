@@ -9,19 +9,25 @@ using System.Windows.Forms;
 
 namespace Server
 {
-    class ServerMainThread
+    public partial class ServerMainThread
     {
         
         volatile bool stop;
         Thread thread;
-        ClientServiceThread serviceClient;
-        //Thread watchdog;
+        public Stock Stocklist;
+        public Users userList;
+        //ClientServiceThread serviceClient;
+        Thread watchdog;
 
         public ServerMainThread()
         {
+            Stocklist = new Stock();
+            userList = new Users();
+
             thread = new Thread(new ThreadStart(serverthread));
-            //watchdog = new Thread(new ThreadStart(stockwatchdog));
-            serviceClient = new ClientServiceThread();
+            watchdog = new Thread(new ThreadStart(stockwatchdog));
+            //serviceClient = new ClientServiceThread();
+
             stop = false;
         }
 
@@ -32,7 +38,12 @@ namespace Server
          */ 
         public void startMainThread()
         {
+
+            //get data from file
+            Stocklist.getStockDataFromFile(fileNameForStock);
+            userList.getUserDataFromFile(fileNameForUser);
             thread.Start();
+            watchdog.Start();
         }
 
 
@@ -91,6 +102,9 @@ namespace Server
                     Socket soc = listener.Accept();
                     if (stop)
                     {
+                        //write datas into files before stop the server
+                        Stocklist.writeAllStockData(fileNameForStock);
+                        userList.writeAllUserData(fileNameForStock);
                         if (DialogResult.Yes == MessageBox.Show("Do you really want to shut down server? ", "Allow", MessageBoxButtons.YesNo))
                         {
                             soc.Shutdown(SocketShutdown.Both);
@@ -99,8 +113,8 @@ namespace Server
                             break;
                         }
                     }
-                    serviceClient.startServicingClient(soc);            
-
+                    //serviceClient.startServicingClient(soc);            
+                    startServicingClient(soc); 
                     /*
                     data = null;
                     while (true)

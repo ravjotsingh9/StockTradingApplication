@@ -122,7 +122,7 @@ namespace Server
         /*
          * append single user's information into the disk
          */ 
-        public bool writeSingleUserData(string FileName, string userName)
+ /**       public bool writeSingleUserData(string FileName, string userName)
         {
             try
             {
@@ -143,15 +143,18 @@ namespace Server
 
             return true;
         }
-
+**/
 
         /*
          * Modify user's cash balance, addORminus: false:decrease balance, true:increase balance
          */ 
         public bool modifyCash(string userName, double amount, bool addORminus)
         {
+            
             if (UserDictionary.ContainsKey(userName))
             {
+     
+                
                 if (addORminus)
                 {
                     UserDictionary[userName].cashBalance += amount;
@@ -159,6 +162,7 @@ namespace Server
                 }
                 else
                 {
+                   
                     if (UserDictionary[userName].cashBalance >= amount)
                     {
                         UserDictionary[userName].cashBalance -= amount;
@@ -233,22 +237,32 @@ namespace Server
         { 
             try
             {       
-                if (this.UserDictionary.ContainsKey(userName))
-                {
+               
+                    if (!UserDictionary[userName].StockShares.ContainsKey(stocKName) && addORdecrese)
+                    {
+
+                            UserDictionary[userName].StockShares.Add(stocKName, 0);
+
+                    }
                     if (addORdecrese)
                     {
                         UserDictionary[userName].StockShares[stocKName] += shares;
                     }
                     else
                     {
-                        UserDictionary[userName].StockShares[stocKName] -= shares;
+                        if (UserDictionary[userName].StockShares[stocKName] < shares)
+                        {
+                            return false;
+                        }
+                        else
+                        {
+                            UserDictionary[userName].StockShares[stocKName] -= shares;
+                            return true;
+                        }
+                        
                     }
                     return true;
-                }
-                else
-                {
-                    return false;
-                }
+         
             }
             catch (Exception e)
             {

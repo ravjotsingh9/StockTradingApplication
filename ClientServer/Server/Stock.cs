@@ -105,7 +105,7 @@ namespace Server
          * add stock into the dictionary with initail shares 1000 and up-to-date price from Yahoo.
          * This function is private. Use writeNewStockData() to both add new stock in memory and file
          */ 
-        private bool addToTheStockList(string stockName)
+        public bool addToTheStockList(string stockName)
         {
             stockInfo info = new stockInfo();
             info.price = getPriceFromYahoo(stockName);
@@ -229,9 +229,7 @@ namespace Server
          */ 
         public bool clientBuyShares(string stockName, int quantity)
         {
-            if (this.stocksDictionary.ContainsKey(stockName))
-            {
-                
+
                 if (this.stocksDictionary[stockName].shares < quantity)
                 {
                     return false;
@@ -241,12 +239,6 @@ namespace Server
                     this.stocksDictionary[stockName].shares -= quantity;
                     return true;
                 }
-               
-            }
-            else
-            {
-                return false;
-            }
             
         }
 
