@@ -262,7 +262,7 @@ namespace Client
                     {
                         userName = txtuser.Text;
                         grptrading.Enabled = true;
-                        lblusernameResponse.Text = "Login";
+                        lblusernameResponse.Text = "Logged-in";
                     }
                     snder.Shutdown(SocketShutdown.Both);
                     snder.Close();
