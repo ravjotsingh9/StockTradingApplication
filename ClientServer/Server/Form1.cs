@@ -37,7 +37,7 @@ namespace Server
         {
             serverthread.stopMainThread();
                 //button2.Enabled = false;
-                button1.Enabled = true;
+                //button1.Enabled = true;
             }  
         
     }

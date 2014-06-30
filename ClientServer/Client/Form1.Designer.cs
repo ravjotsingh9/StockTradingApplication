@@ -65,9 +65,9 @@
             // 
             // btnSell
             // 
-            this.btnSell.Location = new System.Drawing.Point(117, 100);
+            this.btnSell.Location = new System.Drawing.Point(127, 97);
             this.btnSell.Name = "btnSell";
-            this.btnSell.Size = new System.Drawing.Size(75, 23);
+            this.btnSell.Size = new System.Drawing.Size(98, 23);
             this.btnSell.TabIndex = 15;
             this.btnSell.Text = "Sell";
             this.btnSell.UseVisualStyleBackColor = true;
@@ -84,16 +84,16 @@
             // 
             // txtQnty
             // 
-            this.txtQnty.Location = new System.Drawing.Point(92, 60);
+            this.txtQnty.Location = new System.Drawing.Point(125, 61);
             this.txtQnty.Name = "txtQnty";
             this.txtQnty.Size = new System.Drawing.Size(100, 20);
             this.txtQnty.TabIndex = 13;
             // 
             // btnBuy
             // 
-            this.btnBuy.Location = new System.Drawing.Point(23, 100);
+            this.btnBuy.Location = new System.Drawing.Point(23, 97);
             this.btnBuy.Name = "btnBuy";
-            this.btnBuy.Size = new System.Drawing.Size(75, 23);
+            this.btnBuy.Size = new System.Drawing.Size(98, 23);
             this.btnBuy.TabIndex = 9;
             this.btnBuy.Text = "Buy";
             this.btnBuy.UseVisualStyleBackColor = true;
@@ -106,7 +106,6 @@
             this.lblrate.Name = "lblrate";
             this.lblrate.Size = new System.Drawing.Size(0, 13);
             this.lblrate.TabIndex = 8;
-            this.lblrate.Text = "";
             // 
             // label1
             // 
@@ -119,16 +118,16 @@
             // 
             // txtStockname
             // 
-            this.txtStockname.Location = new System.Drawing.Point(92, 33);
+            this.txtStockname.Location = new System.Drawing.Point(125, 34);
             this.txtStockname.Name = "txtStockname";
             this.txtStockname.Size = new System.Drawing.Size(100, 20);
             this.txtStockname.TabIndex = 6;
             // 
             // Query
             // 
-            this.Query.Location = new System.Drawing.Point(215, 30);
+            this.Query.Location = new System.Drawing.Point(249, 32);
             this.Query.Name = "Query";
-            this.Query.Size = new System.Drawing.Size(75, 23);
+            this.Query.Size = new System.Drawing.Size(98, 23);
             this.Query.TabIndex = 5;
             this.Query.Text = "Query";
             this.Query.UseVisualStyleBackColor = true;
@@ -150,11 +149,11 @@
             // lblusernameResponse
             // 
             this.lblusernameResponse.AutoSize = true;
-            this.lblusernameResponse.Location = new System.Drawing.Point(201, 31);
+            this.lblusernameResponse.Location = new System.Drawing.Point(246, 31);
             this.lblusernameResponse.Name = "lblusernameResponse";
-            this.lblusernameResponse.Size = new System.Drawing.Size(123, 13);
+            this.lblusernameResponse.Size = new System.Drawing.Size(67, 13);
             this.lblusernameResponse.TabIndex = 17;
-            this.lblusernameResponse.Text = "<Show Response Here>";
+            this.lblusernameResponse.Text = "<Response>";
             // 
             // label3
             // 
@@ -167,16 +166,16 @@
             // 
             // txtuser
             // 
-            this.txtuser.Location = new System.Drawing.Point(92, 28);
+            this.txtuser.Location = new System.Drawing.Point(125, 28);
             this.txtuser.Name = "txtuser";
             this.txtuser.Size = new System.Drawing.Size(100, 20);
             this.txtuser.TabIndex = 15;
             // 
             // btnLogin
             // 
-            this.btnLogin.Location = new System.Drawing.Point(335, 25);
+            this.btnLogin.Location = new System.Drawing.Point(330, 26);
             this.btnLogin.Name = "btnLogin";
-            this.btnLogin.Size = new System.Drawing.Size(75, 23);
+            this.btnLogin.Size = new System.Drawing.Size(98, 23);
             this.btnLogin.TabIndex = 14;
             this.btnLogin.Text = "Login";
             this.btnLogin.UseVisualStyleBackColor = true;

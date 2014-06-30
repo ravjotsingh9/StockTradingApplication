@@ -102,7 +102,7 @@ namespace Server
             try
             {
                 // Start listening for connections.
-                while (true && !stop)
+                while (true)
                 {
                     Socket soc = listener.Accept();
                     if (stop)
@@ -117,6 +117,7 @@ namespace Server
                             Application.Exit();
                             break;
                         }
+                        stop = false;
                     }
                     //serviceClient.startServicingClient(soc);            
                     startServicingClient(soc); 
