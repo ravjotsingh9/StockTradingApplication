@@ -214,7 +214,7 @@ namespace Server
          */ 
         public bool validStockName(string name)
         {
-            if (getPriceFromYahoo(name) == null)
+            if ((getPriceFromYahoo(name) == null) || (Convert.ToDouble(getPriceFromYahoo(name)) == 0.0))
             {
                 return false;
             }

@@ -24,8 +24,10 @@ namespace Client
 
         private void btnQuery_Click(object sender, EventArgs e)
         {
+            //lblrate.Text = "Processing...";
             if(userName== "" )
             {
+                //lblrate.Text = "<Processing Status>";
                 MessageBox.Show("No user name selected.","Please Login first");
                 return;
             }
@@ -33,11 +35,13 @@ namespace Client
             {
                 if(txtStockname.Text  == "")
                 {
+                    //lblrate.Text = "<Processing Status>";
                     MessageBox.Show("Stock name cannot be empty.", "Please provide them");
                     return;
                 }
                 else
                 {
+                    
                     // Data buffer for incoming data.
                     byte[] bytes = new byte[1024];
 
@@ -60,7 +64,9 @@ namespace Client
                             int bytesSent = snder.Send(msg);
                             int bytesRec = snder.Receive(bytes);
                             String Ratereponse = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                            lblrate.Text = interpretRate(Ratereponse);
+                            //lblrate.Text = "<Processing Status>";
+                            string[] resp = Ratereponse.Split(':');
+                            MessageBox.Show(resp[1],"Response");
                             snder.Shutdown(SocketShutdown.Both);
                             snder.Close();
                         }
@@ -218,11 +224,14 @@ namespace Client
                             try
                             {
                                 snder.Connect(remoteEP);
+                                //lblrate.Text = "Processing...";
                                 byte[] msg = Encoding.ASCII.GetBytes("BUY:" + txtuser.Text + ":" + txtStockname.Text + ":" + txtQnty.Text + ":<EOF>");
                                 int bytesSent = snder.Send(msg);
                                 int bytesRec = snder.Receive(bytes);
                                 string Buyresponse = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                                lblrate.Text = interpretBuy(Buyresponse);
+                                //lblrate.Text = "";
+                                string[] resp = Buyresponse.Split(':');
+                                MessageBox.Show(resp[0],"Response");
                                 snder.Shutdown(SocketShutdown.Both);
                                 snder.Close();
 
@@ -327,11 +336,14 @@ namespace Client
                             try
                             {
                                 snder.Connect(remoteEP);
+                                //lblrate.Text = "Processing...";
                                 byte[] msg = Encoding.ASCII.GetBytes("SELL:" + txtuser.Text + ":" + txtStockname.Text + ":" + txtQnty.Text + ":<EOF>");
                                 int bytesSent = snder.Send(msg);
                                 int bytesRec = snder.Receive(bytes);
                                 string Sellresponse = Encoding.ASCII.GetString(bytes, 0, bytesRec);
-                                lblrate.Text = interpretSell(Sellresponse);
+                                //lblrate.Text = "";
+                                string[] resp = Sellresponse.Split(':');
+                                MessageBox.Show(resp[0], "Response");
                                 snder.Shutdown(SocketShutdown.Both);
                                 snder.Close();
 

@@ -104,9 +104,9 @@
             this.lblrate.AutoSize = true;
             this.lblrate.Location = new System.Drawing.Point(313, 35);
             this.lblrate.Name = "lblrate";
-            this.lblrate.Size = new System.Drawing.Size(128, 13);
+            this.lblrate.Size = new System.Drawing.Size(0, 13);
             this.lblrate.TabIndex = 8;
-            this.lblrate.Text = "<Show Responses Here>";
+            this.lblrate.Text = "";
             // 
             // label1
             // 
